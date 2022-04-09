@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
@@ -55,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String? _ip;
   int? _port;
   bool _isConnected = false;
+  final ValueNotifier<List<String>> _logs = ValueNotifier([]);
   //final _serverIpController = TextEditingController();
 
   void _connect() async {
@@ -64,14 +66,18 @@ class _MyHomePageState extends State<MyHomePage> {
     if (_port == null) {
       return;
     }
-    var socket = await Socket.connect(_ip!, _port!);
+    var socket = await Socket.connect(_ip!, _port!).catchError((e) {
+      _log(e.toString());
+    });
 
     setState(() {
       _isConnected = true;
       _channel = socket;
     });
 
-    _channel?.listen((event) {}, cancelOnError: false);
+    _channel?.listen((event) {
+      _onReceived(socket.address, event);
+    }, onDone: () {}, onError: (e) {}, cancelOnError: false);
   }
 
   void _disconnect() {
@@ -85,6 +91,15 @@ class _MyHomePageState extends State<MyHomePage> {
     if (message.isNotEmpty) {
       _channel?.write(message);
     }
+  }
+
+  void _onReceived(address, Uint8List event) {
+    // 로그에 저장되는 내용: "<아이피>: <데이터>";
+    _logs.value.add(address + String.fromCharCodes(event).trim());
+  }
+
+  void _log(String message) {
+    _logs.value.add(message);
   }
 
   @override
@@ -119,17 +134,17 @@ class _MyHomePageState extends State<MyHomePage> {
         // center the children vertically; the main axis here is the vertical
         // axis because Columns are vertical (the cross axis would be
         // horizontal).
-        //mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          const Text(
-            'TCP Client Sample:',
-          ),
           Card(
             child: Column(children: [
               ListTile(
                   dense: true,
                   leading: const Text("IP"),
                   title: TextField(
+                      // TODO: 아이피 Validation
+                      enabled: !_isConnected,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: '아이피 입력',
@@ -143,6 +158,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 dense: true,
                 leading: const Text("Port"),
                 title: TextField(
+                    // TODO: 포트 번호 Validation
+                    enabled: !_isConnected,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
@@ -156,6 +173,18 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ]),
           ),
+          Card(
+            child: Column(children: [
+              const Text("전송 테스트"),
+              ElevatedButton(onPressed: () {}, child: const Text("전송"))
+            ]),
+          ),
+          ListView.builder(
+            itemBuilder: (context, index) {
+              return Text(_logs.value[index]);
+            },
+            itemCount: _logs.value.length,
+          )
         ],
       )),
       // TODO: 토글로 바꾸기
