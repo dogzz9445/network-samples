@@ -1,0 +1,172 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using Common;
+using Newtonsoft.Json;
+
+namespace Network
+{
+    public class ComputerInfo : BindableBase
+    {
+        #region 속성
+        [JsonProperty("id")]
+        private int? _id;
+        [JsonProperty("ipAddress")]
+        private IPAddress _ipAddress;
+        [JsonProperty("name")]
+        private string _name;
+        [JsonProperty("description")]
+        private string _description;
+        [JsonProperty("type")]
+        private string _type;
+        [JsonProperty("useTcpServer")]
+        private bool? _useTcpServer;
+        [JsonProperty("tcpPort")]
+        private int? _tcpPort;
+        [JsonProperty("useUdpServer")]
+        private bool? _useUdpServer;
+        [JsonProperty("udpPort")]
+        private int? _udpPort;
+        [JsonProperty("useHttpServer")]
+        private bool? _useHttpServer;
+        [JsonProperty("httpPort")]
+        private int? _httpPort;
+
+        [JsonIgnore]
+        public int? Id { get => _id; set => SetProperty(ref _id, value); }
+        [JsonIgnore]
+        public IPAddress IpAddress { get => _ipAddress; set => SetProperty(ref _ipAddress, value); }
+        [JsonIgnore]
+        public string Name { get => _name; set => SetProperty(ref _name, value); }
+        [JsonIgnore]
+        public string Description { get => _description; set => SetProperty(ref _description, value); }
+        [JsonIgnore]
+        public string Type { get => _type; set => SetProperty(ref _type, value); }
+        [JsonIgnore]
+        public bool? UseTcpServer { get => _useTcpServer; set => SetProperty(ref _useTcpServer, value); }
+        [JsonIgnore]
+        public int? TcpPort { get => _tcpPort; set => SetProperty(ref _tcpPort, value); }
+        [JsonIgnore]
+        public bool? UseUdpServer { get => _useUdpServer; set => SetProperty(ref _useUdpServer, value); }
+        [JsonIgnore]
+        public int? UdpPort { get => _udpPort; set => SetProperty(ref _udpPort, value); }
+        [JsonIgnore]
+        public bool? UseHttpServer { get => _useHttpServer; set => SetProperty(ref _useHttpServer, value); }
+        [JsonIgnore]
+        public int? HttpPort { get => _httpPort; set => SetProperty(ref _httpPort, value); }
+        #endregion
+
+        #region 생성자
+        public ComputerInfo() : this(null) { }
+
+        public ComputerInfo(
+            int? id = null,
+            IPAddress ipAddress = null,
+            string name = null,
+            string description = null,
+            string type = null,
+            int? tcpPort = null,
+            int? udpPort = null,
+            int? httpPort = null, bool? useTcpServer = null, bool? useUdpServer = null, bool? useHttpServer = null)
+        {
+            Id = id ?? 0;
+            IpAddress = ipAddress ?? IPAddress.None;
+            Name = name ?? "기본";
+            Description = description ?? "기본 컴퓨터 구성";
+            Type = type ?? "기본 클라이언트";
+            _useTcpServer = useTcpServer ?? true;
+            _tcpPort = tcpPort ?? 5000;
+            _useUdpServer = useUdpServer ?? true;
+            _udpPort = udpPort ?? 5000;
+            _useHttpServer = useHttpServer ?? false;
+            _httpPort = httpPort ?? 5001;
+        }
+        #endregion
+
+        #region 비교 구문
+        public override bool Equals(object obj)
+        {
+            return obj is ComputerInfo info &&
+                   _id == info._id &&
+                   EqualityComparer<IPAddress>.Default.Equals(_ipAddress, info._ipAddress) &&
+                   _name == info._name &&
+                   _description == info._description &&
+                   _type == info._type &&
+                   _useTcpServer == info._useTcpServer &&
+                   _tcpPort == info._tcpPort &&
+                   _useUdpServer == info._useUdpServer &&
+                   _udpPort == info._udpPort &&
+                   _useHttpServer == info._useHttpServer &&
+                   _httpPort == info._httpPort;
+        }
+
+        public override int GetHashCode()
+        {
+            HashCode hash = new HashCode();
+            hash.Add(_id);
+            hash.Add(_ipAddress);
+            hash.Add(_name);
+            hash.Add(_description);
+            hash.Add(_type);
+            hash.Add(_useTcpServer);
+            hash.Add(_tcpPort);
+            hash.Add(_useUdpServer);
+            hash.Add(_udpPort);
+            hash.Add(_useHttpServer);
+            hash.Add(_httpPort);
+            return hash.ToHashCode();
+        }
+
+        #endregion
+    }
+
+    public class NetworkSettings : BindableBase
+    {
+        #region 속성
+        [JsonProperty("useDebug")]
+        private bool? _useDebug;
+        [JsonProperty("hostId")]
+        private int? _hostId;
+        [JsonProperty("computerInfos")]
+        private ObservableCollection<ComputerInfo> _computerInfos;
+
+        [JsonIgnore]
+        public bool? UseDebug { get => _useDebug; set => SetProperty(ref _useDebug, value); }
+        [JsonIgnore]
+        public int? HostId { get => _hostId; set => SetProperty(ref _hostId, value); }
+        [JsonIgnore]
+        public ObservableCollection<ComputerInfo> ComputerInfos { get => _computerInfos; set => SetCollectionProperty(ref _computerInfos, value); }
+        #endregion
+
+        #region 생성자
+        public NetworkSettings() : this(null) { }
+
+        public NetworkSettings(bool? useDebug = null, int? hostId = null, ObservableCollection<ComputerInfo> computerInfos = null)
+        {
+            UseDebug = useDebug ?? false;
+            HostId = hostId ?? 0;
+            ComputerInfos = computerInfos ?? new ObservableCollection<ComputerInfo>();
+        }
+
+        #endregion
+
+        #region 비교 구문
+        public override bool Equals(object obj)
+        {
+            return obj is NetworkSettings settings &&
+                   _useDebug == settings._useDebug &&
+                   _hostId == settings._hostId &&
+                   EqualityComparer<ObservableCollection<ComputerInfo>>.Default.Equals(_computerInfos, settings._computerInfos);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_useDebug, _hostId, _computerInfos);
+        }
+        #endregion
+    }
+}
