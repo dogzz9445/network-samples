@@ -17,7 +17,7 @@ namespace Network
     {
         protected override void OnReceivedMessage(object sender, PacketEventArgs eventArgs)
         {
-            "Hello";
+            Console.WriteLine("Received");
         }
     }
 }

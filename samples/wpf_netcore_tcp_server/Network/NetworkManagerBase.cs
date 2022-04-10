@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using wpf_netcore_tcp_server.Network.Core;
@@ -25,12 +26,12 @@ namespace wpf_netcore_tcp_server.Network
 
         protected abstract void OnReceivedMessage(object sender, PacketEventArgs eventArgs);
 
-        public void Send(int destinationId, string message, ProtocolType protocolType = ProtocolType.TCP)
+        public void Send(int destinationId, string message, ProtocolType protocolType = ProtocolType.Tcp)
         {
             Module?.Send(destinationId, message, protocolType);
         }
 
-        public void SendFile(int destinationId, string message, ProtocolType protocolType = ProtocolType.TCP)
+        public void SendFile(int destinationId, string message, ProtocolType protocolType = ProtocolType.Tcp)
         {
             Module?.Send(destinationId, message, protocolType);
         }

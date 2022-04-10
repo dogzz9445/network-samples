@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using AppSettings;
 using NetCoreServer;
 using Network;
@@ -10,13 +11,6 @@ using wpf_netcore_tcp_server.Network.Core;
 
 namespace wpf_netcore_tcp_server.Network
 {
-    public enum ProtocolType
-    {
-        TCP,
-        UDP,
-        HTTP
-    }
-
     public class NetworkModule : Consumer<NetworkSettingsController, NetworkSettings>
     {
         public event PacketEventHandler ReceivedMessage;
@@ -139,11 +133,11 @@ namespace wpf_netcore_tcp_server.Network
             Log($"Sended to [{destinationId}] message [{message}]");
         }
 
-        public void Send(int destinationId, string message, ProtocolType protocolType = ProtocolType.TCP)
+        public void Send(int destinationId, string message, ProtocolType protocolType = ProtocolType.Tcp)
         {
             switch (protocolType)
             {
-                case ProtocolType.TCP:
+                case ProtocolType.Tcp:
                     SendTCP(destinationId, message);
                     break;
                 default:
