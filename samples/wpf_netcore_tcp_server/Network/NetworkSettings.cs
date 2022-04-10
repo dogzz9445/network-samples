@@ -16,7 +16,7 @@ namespace Network
         [JsonProperty("id")]
         private int? _id;
         [JsonProperty("ipAddress")]
-        private IPAddress _ipAddress;
+        private string _ipAddress;
         [JsonProperty("name")]
         private string _name;
         [JsonProperty("description")]
@@ -39,7 +39,7 @@ namespace Network
         [JsonIgnore]
         public int? Id { get => _id; set => SetProperty(ref _id, value); }
         [JsonIgnore]
-        public IPAddress IpAddress { get => _ipAddress; set => SetProperty(ref _ipAddress, value); }
+        public string IpAddress { get => _ipAddress; set => SetProperty(ref _ipAddress, value); }
         [JsonIgnore]
         public string Name { get => _name; set => SetProperty(ref _name, value); }
         [JsonIgnore]
@@ -65,7 +65,7 @@ namespace Network
 
         public ComputerInfo(
             int? id = null,
-            IPAddress ipAddress = null,
+            string ipAddress = null,
             string name = null,
             string description = null,
             string type = null,
@@ -74,7 +74,7 @@ namespace Network
             int? httpPort = null, bool? useTcpServer = null, bool? useUdpServer = null, bool? useHttpServer = null)
         {
             Id = id ?? 0;
-            IpAddress = ipAddress ?? IPAddress.None;
+            IpAddress = ipAddress ?? IPAddress.None.ToString();
             Name = name ?? "기본";
             Description = description ?? "기본 컴퓨터 구성";
             Type = type ?? "기본 클라이언트";
@@ -85,6 +85,7 @@ namespace Network
             _useHttpServer = useHttpServer ?? false;
             _httpPort = httpPort ?? 5001;
         }
+
         #endregion
 
         #region 비교 구문
@@ -92,7 +93,7 @@ namespace Network
         {
             return obj is ComputerInfo info &&
                    _id == info._id &&
-                   EqualityComparer<IPAddress>.Default.Equals(_ipAddress, info._ipAddress) &&
+                   _ipAddress == info._ipAddress &&
                    _name == info._name &&
                    _description == info._description &&
                    _type == info._type &&
@@ -120,7 +121,6 @@ namespace Network
             hash.Add(_httpPort);
             return hash.ToHashCode();
         }
-
         #endregion
     }
 

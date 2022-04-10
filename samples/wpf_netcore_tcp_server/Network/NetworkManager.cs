@@ -75,7 +75,21 @@ namespace Network
         protected override TcpSession CreateSession()
         {
             var session = new CustomTcpSession(this);
-            return new CustomTcpSession(this);
+            session.ReceivedMessage += RaiseReceivedMessageEvent;
+            return session;
+        }
+
+        public event PacketEventHandler ReceivedMessage;
+
+        public void RaiseReceivedMessageEvent(object sender, PacketEventArgs eventArgs)
+        {
+            ReceivedMessage?.Invoke(sender, eventArgs);
+        }
+
+        protected override void OnDisconnected(TcpSession session)
+        {
+            (session as CustomTcpSession).ReceivedMessage -= RaiseReceivedMessageEvent;
+            base.OnDisconnected(session);
         }
 
         protected override void OnError(SocketError error)
@@ -90,6 +104,8 @@ namespace Network
         private UdpServer _udpServer;
         private HttpServer _httpServer;
 
+        public event PacketEventHandler ReceivedMessage;
+
         public NetworkManager() : base()
         {
             RefreshSessions();
@@ -99,6 +115,7 @@ namespace Network
         {
             if (_tcpServer != null)
             {
+                _tcpServer.ReceivedMessage -= RaiseReceivedMessage;
                 _tcpServer.Dispose();
             }
             if (_udpServer != null)
@@ -133,6 +150,7 @@ namespace Network
             {
                 _tcpServer = new CustomTcpServer(IPAddress.Any, hostComputerInfo.TcpPort ?? 0);
                 _tcpServer.Start();
+                _tcpServer.ReceivedMessage += RaiseReceivedMessage;
             }
             if (hostComputerInfo.UseUdpServer ?? false)
             {
@@ -144,6 +162,11 @@ namespace Network
                 _httpServer = new HttpServer(IPAddress.Any, hostComputerInfo.HttpPort ?? 0);
                 _httpServer.Start();
             }
+        }
+
+        private void RaiseReceivedMessage(object sender, PacketEventArgs eventArgs)
+        {
+            ReceivedMessage?.Invoke(sender, eventArgs);
         }
 
         public void RefreshSessions()

@@ -2,19 +2,33 @@
 using Network;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace wpf_netcore_tcp_server.ViewModel
 {
     public class HomeViewModel : BindableBase
     {
+        private static Func<Action, Task> callOnUiThread = async (handler) =>
+            await Application.Current.Dispatcher.InvokeAsync(handler);
+
         private NetworkManager _networkManager;
+        private ObservableCollection<string> _messages;
+        public ObservableCollection<string> Messages { get => _messages; set => _messages = value; }
 
         public HomeViewModel()
         {
-             _networkManager = new NetworkManager();
+            _networkManager = new NetworkManager();
+            Messages = new ObservableCollection<string>();
+            _networkManager.ReceivedMessage += _networkManager_ReceivedMessage;
+        }
+
+        private async void _networkManager_ReceivedMessage(object sender, PacketEventArgs e)
+        {
+            await callOnUiThread(() => Messages.Add(e.Message));
         }
     }
 }

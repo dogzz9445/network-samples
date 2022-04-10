@@ -33,8 +33,6 @@ namespace Network
             PropertyChanged += (s, e) => Save();
 
             Load();
-            AddHost();
-            Save();
         }
 
         public override void Load()
@@ -42,21 +40,6 @@ namespace Network
             _global = this;
             _context = ReadFileOrDefault<NetworkSettings>(ContextFullFileName);
             RaisePropertyChangedEvent();
-        }
-
-        public void AddHost()
-        {
-            _context.ComputerInfos.Add(new ComputerInfo()
-            {
-                Id = 0,
-                Description = "테스트",
-                Name = "localhost",
-                Type = "테스트컴퓨터",
-                IpAddress = IPAddress.Parse("127.0.0.1"),
-                UseTcpServer = true,
-                UseHttpServer = false,
-                UseUdpServer = false
-            });
         }
 
         public async void Save()

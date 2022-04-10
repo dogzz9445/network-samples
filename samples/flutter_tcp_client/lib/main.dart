@@ -66,9 +66,11 @@ class _MyHomePageState extends State<MyHomePage> {
     if (_port == null) {
       return;
     }
-    var socket = await Socket.connect(_ip!, _port!).catchError((e) {
-      _log(e.toString());
-    });
+    var socket = await Socket.connect(_ip, _port ?? 5000);
+    // TODO: 에러처리 제대로
+    // .catchError((e) {
+    //   _log(e.toString());
+    // });
 
     setState(() {
       _isConnected = true;
@@ -134,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // center the children vertically; the main axis here is the vertical
         // axis because Columns are vertical (the cross axis would be
         // horizontal).
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Card(
@@ -176,15 +178,21 @@ class _MyHomePageState extends State<MyHomePage> {
           Card(
             child: Column(children: [
               const Text("전송 테스트"),
-              ElevatedButton(onPressed: () {}, child: const Text("전송"))
+              ElevatedButton(
+                  onPressed: () {
+                    _send("hello");
+                  },
+                  child: const Text("전송"))
             ]),
           ),
-          ListView.builder(
-            itemBuilder: (context, index) {
-              return Text(_logs.value[index]);
-            },
-            itemCount: _logs.value.length,
-          )
+          // Card(
+          //   child: ListView.builder(
+          //     itemBuilder: (context, index) {
+          //       return Text(_logs.value[index]);
+          //     },
+          //     itemCount: _logs.value.length,
+          //   ),
+          // )
         ],
       )),
       // TODO: 토글로 바꾸기
