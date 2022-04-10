@@ -185,14 +185,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const Text("전송"))
             ]),
           ),
-          // Card(
-          //   child: ListView.builder(
-          //     itemBuilder: (context, index) {
-          //       return Text(_logs.value[index]);
-          //     },
-          //     itemCount: _logs.value.length,
-          //   ),
-          // )
+          Card(
+              child: Column(
+            children: [
+              const Text("로그"),
+              ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Text(_logs.value[index]);
+                },
+                itemCount: _logs.value.length,
+              ),
+            ],
+          ))
         ],
       )),
       // TODO: 토글로 바꾸기
