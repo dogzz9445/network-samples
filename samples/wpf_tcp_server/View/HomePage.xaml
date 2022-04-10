@@ -57,7 +57,8 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Style="{StaticResource MaterialDesignOutlinedButton}"
-                        Content="시작"/>
+                        Content="시작"
+                        Cursor="Hand" />
             </StackPanel>
         </Border>
 
