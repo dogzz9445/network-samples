@@ -37,9 +37,9 @@ namespace AppSettings
             {
                 if (_context == null)
                 {
-                    _context = new T();
+                    SetObservableProperty(ref _context, new T());
                 }
-                return _context;
+                return _context!;
             }
             set
             {

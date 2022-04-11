@@ -42,11 +42,6 @@ namespace wpf_netcore_tcp_server.Network.Core
                 ConnectAsync();
         }
 
-        public void SendFile(string filename)
-        {
-            Socket.SendFile(filename);
-        }
-
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
             string message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);

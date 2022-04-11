@@ -8,11 +8,16 @@ using wpf_netcore_tcp_server.Network.Core;
 
 namespace wpf_netcore_tcp_server.Network
 {
+    public class Packet
+    {
+
+    }
     /// <summary>
     /// 브릿지 패턴
     /// </summary>
     public abstract class NetworkManagerBase
     {
+        public EventHandler<Packet> Received;
         public event PacketEventHandler ReceivedMessage;
         protected NetworkModule module;
         public NetworkModule Module { get => module; set => module = value; }

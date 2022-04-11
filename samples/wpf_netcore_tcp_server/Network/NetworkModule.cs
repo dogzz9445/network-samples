@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 using AppSettings;
 using NetCoreServer;
 using Network;
@@ -16,15 +18,18 @@ namespace wpf_netcore_tcp_server.Network
         public event PacketEventHandler ReceivedMessage;
         private NetworkSettings _settings;
         private BaseTcpServer _tcpServer;
+        private BaseFileTcpServer _fileServer;
         private UdpServer _udpServer;
         private HttpServer _httpServer;
 
         private Dictionary<int, BaseTcpClient> _tcpClients;
+        private Dictionary<int, BaseFileTcpClient> _fileTcpClients;
 
         public NetworkModule() : base()
         {
             _tcpClients = new Dictionary<int, BaseTcpClient>();
-            RefreshSessions();
+            _fileTcpClients = new Dictionary<int, BaseFileTcpClient>();
+            Initialize();
         }
 
         public void ClearSessions()
@@ -43,18 +48,28 @@ namespace wpf_netcore_tcp_server.Network
                 _tcpServer.Stop();
                 Log("TCP Server Stopped...");
                 _tcpServer.Dispose();
+                _tcpServer = null;
             }
             if (_udpServer != null)
             {
                 _udpServer.Stop();
                 Log("UDP Server Stopped...");
                 _udpServer.Dispose();
+                _udpServer = null;
             }
             if (_httpServer != null)
             {
                 _httpServer.Stop();
                 Log("HTTP Server Stopped...");
                 _httpServer.Dispose();
+                _httpServer = null;
+            }
+            if (_fileServer != null)
+            {
+                _fileServer.Stop();
+                Log("File Server Stopped...");
+                _fileServer.Dispose();
+                _fileServer = null;
             }
         }
 
@@ -95,6 +110,13 @@ namespace wpf_netcore_tcp_server.Network
                 _httpServer.Start();
                 Log("HTTP Server Started...");
             }
+            if (hostComputerInfo.UseFileTcpServer ?? false)
+            {
+                _fileServer = new BaseFileTcpServer(IPAddress.Any, hostComputerInfo.FileTcpPort ?? 0,
+                                                    _settings.IsSaveFileAbsolutePath ?? false, _settings.FileSavedDirectory);
+                _fileServer.Start();
+                Log("File Server Started...");
+            }
         }
 
         public void SendTCP(int destinationId, string message)
@@ -133,6 +155,11 @@ namespace wpf_netcore_tcp_server.Network
             Log($"Sended to [{destinationId}] message [{message}]");
         }
 
+        public void SendUDP(int destinationId, string message)
+        {
+
+        }
+
         public void Send(int destinationId, string message, ProtocolType protocolType = ProtocolType.Tcp)
         {
             switch (protocolType)
@@ -140,9 +167,41 @@ namespace wpf_netcore_tcp_server.Network
                 case ProtocolType.Tcp:
                     SendTCP(destinationId, message);
                     break;
+                case ProtocolType.Udp:
+                    SendUDP(destinationId, message);
+                    break;
                 default:
                     break;
             }
+        }
+
+        public void SendFile(int destinationId, string filename)
+        {
+            if (!_fileTcpClients.ContainsKey(destinationId))
+            {
+                ComputerInfo destinationComputerInfo = null;
+                foreach (var computerInfo in _settings.ComputerInfos)
+                {
+                    if (computerInfo.Id == destinationId)
+                    {
+                        destinationComputerInfo = computerInfo;
+                        break;
+                    }
+                }
+                if (destinationComputerInfo == null)
+                {
+                    return;
+                }
+                var ipAddress = destinationComputerInfo.IpAddress;
+                var port = destinationComputerInfo.FileTcpPort;
+                var fileTcpClient = new BaseFileTcpClient(ipAddress, port ?? 5002);
+                _fileTcpClients.Add(destinationId, fileTcpClient);
+            }
+            if (_fileTcpClients[destinationId] == null)
+            {
+                return;
+            }
+            _fileTcpClients[destinationId].SendFile(filename);
         }
 
         private void RaiseReceivedMessage(object sender, PacketEventArgs eventArgs)

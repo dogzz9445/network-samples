@@ -27,6 +27,10 @@ namespace Network
         private bool? _useTcpServer;
         [JsonProperty("tcpPort")]
         private int? _tcpPort;
+        [JsonProperty("useFileTcpServer")]
+        private bool? _useFileTcpServer;
+        [JsonProperty("fileTcpPort")]
+        private int? _fileTcpPort;
         [JsonProperty("useUdpServer")]
         private bool? _useUdpServer;
         [JsonProperty("udpPort")]
@@ -58,6 +62,10 @@ namespace Network
         public bool? UseHttpServer { get => _useHttpServer; set => SetProperty(ref _useHttpServer, value); }
         [JsonIgnore]
         public int? HttpPort { get => _httpPort; set => SetProperty(ref _httpPort, value); }
+        [JsonIgnore]
+        public bool? UseFileTcpServer { get => _useFileTcpServer; set => SetProperty(ref _useFileTcpServer, value); }
+        [JsonIgnore]
+        public int? FileTcpPort { get => _fileTcpPort; set => SetProperty(ref _fileTcpPort, value); }
         #endregion
 
         #region 생성자
@@ -71,7 +79,7 @@ namespace Network
             string type = null,
             int? tcpPort = null,
             int? udpPort = null,
-            int? httpPort = null, bool? useTcpServer = null, bool? useUdpServer = null, bool? useHttpServer = null)
+            int? httpPort = null, bool? useTcpServer = null, bool? useUdpServer = null, bool? useHttpServer = null, bool? useFileTcpServer = null, int? fileTcpPort = null)
         {
             Id = id ?? 0;
             IpAddress = ipAddress ?? IPAddress.None.ToString();
@@ -84,6 +92,8 @@ namespace Network
             _udpPort = udpPort ?? 5000;
             _useHttpServer = useHttpServer ?? false;
             _httpPort = httpPort ?? 5001;
+            UseFileTcpServer = useFileTcpServer ?? true;
+            _fileTcpPort = fileTcpPort ?? 5002;
         }
 
         #endregion
@@ -99,6 +109,8 @@ namespace Network
                    _type == info._type &&
                    _useTcpServer == info._useTcpServer &&
                    _tcpPort == info._tcpPort &&
+                   _useFileTcpServer == info._useFileTcpServer &&
+                   _fileTcpPort == info._fileTcpPort &&
                    _useUdpServer == info._useUdpServer &&
                    _udpPort == info._udpPort &&
                    _useHttpServer == info._useHttpServer &&
@@ -115,12 +127,15 @@ namespace Network
             hash.Add(_type);
             hash.Add(_useTcpServer);
             hash.Add(_tcpPort);
+            hash.Add(_useFileTcpServer);
+            hash.Add(_fileTcpPort);
             hash.Add(_useUdpServer);
             hash.Add(_udpPort);
             hash.Add(_useHttpServer);
             hash.Add(_httpPort);
             return hash.ToHashCode();
         }
+
         #endregion
     }
 
@@ -131,6 +146,10 @@ namespace Network
         private bool? _useDebug;
         [JsonProperty("hostId")]
         private int? _hostId;
+        [JsonProperty("isSaveFileAbsolutePath")]
+        private bool? _isSaveFileAbsolutePath;
+        [JsonProperty("fileSavedDirectory")]
+        private string _fileSavedDirectory;
         [JsonProperty("computerInfos")]
         private ObservableCollection<ComputerInfo> _computerInfos;
 
@@ -140,33 +159,48 @@ namespace Network
         public int? HostId { get => _hostId; set => SetProperty(ref _hostId, value); }
         [JsonIgnore]
         public ObservableCollection<ComputerInfo> ComputerInfos { get => _computerInfos; set => SetCollectionProperty(ref _computerInfos, value); }
+        [JsonIgnore]
+        public bool? IsSaveFileAbsolutePath { get => _isSaveFileAbsolutePath; set => SetProperty(ref _isSaveFileAbsolutePath, value); }
+        [JsonIgnore]
+        public string FileSavedDirectory { get => _fileSavedDirectory; set => SetProperty(ref _fileSavedDirectory, value); }
         #endregion
 
         #region 생성자
         public NetworkSettings() : this(null) { }
 
-        public NetworkSettings(bool? useDebug = null, int? hostId = null, ObservableCollection<ComputerInfo> computerInfos = null)
+        public NetworkSettings(bool? useDebug = null, int? hostId = null, ObservableCollection<ComputerInfo> computerInfos = null, bool? isSaveFileAbsolutePath = null, string fileSavedDirectory = null)
         {
             UseDebug = useDebug ?? false;
             HostId = hostId ?? 0;
             ComputerInfos = computerInfos ?? new ObservableCollection<ComputerInfo>();
+            IsSaveFileAbsolutePath = isSaveFileAbsolutePath ?? false;
+            FileSavedDirectory = fileSavedDirectory ?? "./Data";
         }
 
-        #endregion
-
-        #region 비교 구문
         public override bool Equals(object obj)
         {
             return obj is NetworkSettings settings &&
                    _useDebug == settings._useDebug &&
                    _hostId == settings._hostId &&
+                   _isSaveFileAbsolutePath == settings._isSaveFileAbsolutePath &&
+                   _fileSavedDirectory == settings._fileSavedDirectory &&
                    EqualityComparer<ObservableCollection<ComputerInfo>>.Default.Equals(_computerInfos, settings._computerInfos);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(_useDebug, _hostId, _computerInfos);
+            return HashCode.Combine(_useDebug, _hostId, _isSaveFileAbsolutePath, _fileSavedDirectory, _computerInfos);
         }
+
+        public void Add(ComputerInfo computerInfo)
+        {
+            computerInfo.PropertyChanged += RaisePropertyChangedEvent;
+            ComputerInfos.Add(computerInfo);
+            RaisePropertyChangedEvent();
+        }
+        #endregion
+
+        #region 비교 구문
         #endregion
     }
 }

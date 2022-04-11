@@ -5,7 +5,12 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:wpf_netcore_tcp_server.View"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal"
+      TextOptions.TextRenderingMode="Auto"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HomePage">
     <Page.Resources>
@@ -16,8 +21,66 @@
             </materialDesign:Card>
         </DataTemplate>
     </Page.Resources>
+    
     <Grid>
-        <ListView ItemTemplate="{DynamicResource ReceivedMessageListDataTemplate}"
-                  ItemsSource="{Binding Messages}"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="96" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="96" />
+        </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Margin="8">
+            <TextBlock Text="헤드"
+                       Margin="8"
+                       HorizontalAlignment="Center" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding AddHostCommand}"
+                        HorizontalAlignment="Center"
+                        Content="호스트 추가" 
+                        Margin="8"/>
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendFileCommand}"
+                        HorizontalAlignment="Center"
+                        Content="파일 전송"
+                        Margin="8" />
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        HorizontalAlignment="Center"
+                        Content="버튼"
+                        Margin="8" />
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        HorizontalAlignment="Center"
+                        Content="버튼"
+                        Margin="8" />
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        HorizontalAlignment="Center"
+                        Content="버튼"
+                        Margin="8" />
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        HorizontalAlignment="Center"
+                        Content="버튼"
+                        Margin="8" />
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        HorizontalAlignment="Center"
+                        Content="버튼"
+                        Margin="8" />
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        HorizontalAlignment="Center"
+                        Content="버튼"
+                        Margin="8" />
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        HorizontalAlignment="Center"
+                        Content="버튼"
+                        Margin="8" />
+            </StackPanel>
+            </StackPanel>
+            <Grid Grid.Row="1">
+                <Border BorderBrush="#32FFFFFF" BorderThickness="1" Margin="8">
+                <StackPanel>
+                    <TextBlock Text="로그" HorizontalAlignment="Center" />
+                    <ListView ItemTemplate="{DynamicResource ReceivedMessageListDataTemplate}"
+                              ItemsSource="{Binding Messages}" />
+                </StackPanel>
+                </Border>
+            </Grid>
     </Grid>
 </Page>

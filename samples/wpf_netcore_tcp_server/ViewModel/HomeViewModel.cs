@@ -20,6 +20,24 @@ namespace wpf_netcore_tcp_server.ViewModel
         private ObservableCollection<string> _messages;
         public ObservableCollection<string> Messages { get => _messages; set => _messages = value; }
 
+        private DelegateCommand _addHostCommand;
+        public DelegateCommand AddHostCommand
+        {
+            get => _addHostCommand ??= new DelegateCommand(() => 
+            {
+                NetworkSettingsController.Global.Context.Add(new ComputerInfo() { });
+            });
+        }
+
+        private DelegateCommand _sendFileCommand;
+        public DelegateCommand SendFileCommand
+        {
+            get => _sendFileCommand ??= new DelegateCommand(() =>
+                {
+                    _networkManager.Module.SendFile(0, "test.txt");
+                });
+        }
+
         public HomeViewModel()
         {
             _networkManager = new NetworkManager();

@@ -38,7 +38,7 @@ namespace Network
         public override void Load()
         {
             _global = this;
-            _context = ReadFileOrDefault<NetworkSettings>(ContextFullFileName);
+            Context = ReadFileOrDefault<NetworkSettings>(ContextFullFileName);
             RaisePropertyChangedEvent();
         }
 
