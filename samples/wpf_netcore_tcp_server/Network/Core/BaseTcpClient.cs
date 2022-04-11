@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NetCoreServer;
 
-namespace wpf_netcore_tcp_server.Network.Core
+namespace SettingNetwork.Core
 {
     public class BaseTcpClient : NetCoreServer.TcpClient
     {

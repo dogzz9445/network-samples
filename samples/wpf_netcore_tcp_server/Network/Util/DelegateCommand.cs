@@ -26,7 +26,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Common
+namespace SettingNetwork.Util
 {
     /// <summary>
     /// An <see cref="ICommand"/> whose delegates can be attached for <see cref="Execute"/> and <see cref="CanExecute"/>.

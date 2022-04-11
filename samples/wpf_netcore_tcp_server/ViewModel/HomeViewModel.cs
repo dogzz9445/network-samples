@@ -1,13 +1,14 @@
-﻿using Common;
-using Network;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using wpf_netcore_tcp_server.Network.Core;
+using SettingNetwork;
+using SettingNetwork.Util;
+using SettingNetwork.Core;
+using SettingNetwork.Setting;
 
 namespace wpf_netcore_tcp_server.ViewModel
 {

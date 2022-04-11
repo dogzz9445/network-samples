@@ -6,12 +6,10 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using AppSettings;
 using NetCoreServer;
-using wpf_netcore_tcp_server.Network;
-using wpf_netcore_tcp_server.Network.Core;
+using SettingNetwork.Core;
 
-namespace Network
+namespace SettingNetwork
 {
     public class NetworkManager : NetworkManagerBase
     {

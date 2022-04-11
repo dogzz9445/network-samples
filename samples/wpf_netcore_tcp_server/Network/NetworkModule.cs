@@ -6,12 +6,12 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using AppSettings;
 using NetCoreServer;
-using Network;
-using wpf_netcore_tcp_server.Network.Core;
+using SettingNetwork.Setting;
+using SettingNetwork.Util;
+using SettingNetwork.Core;
 
-namespace wpf_netcore_tcp_server.Network
+namespace SettingNetwork
 {
     public class NetworkModule : Consumer<NetworkSettingsController, NetworkSettings>
     {

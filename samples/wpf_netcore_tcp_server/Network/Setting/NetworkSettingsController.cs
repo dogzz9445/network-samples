@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
-using AppSettings;
 using Newtonsoft.Json;
 
-namespace Network
+namespace SettingNetwork.Setting
 {
     public class NetworkSettingsController : Provider<NetworkSettings>
     {

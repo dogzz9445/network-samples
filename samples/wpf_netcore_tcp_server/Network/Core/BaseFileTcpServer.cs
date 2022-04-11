@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace wpf_netcore_tcp_server.Network.Core
+namespace SettingNetwork.Core
 {
     public class BaseFileTcpSession : NetCoreServer.TcpSession
     {

@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Common;
 using Newtonsoft.Json;
+using SettingNetwork.Util;
 
-namespace Network
+namespace SettingNetwork.Setting
 {
     public class ComputerInfo : BindableBase
     {

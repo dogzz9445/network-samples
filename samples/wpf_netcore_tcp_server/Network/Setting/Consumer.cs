@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace AppSettings
+namespace SettingNetwork.Setting
 {
     public abstract class Consumer<T, S> : INotifyPropertyChanged, IDisposable
         where T : Provider<S>, new()

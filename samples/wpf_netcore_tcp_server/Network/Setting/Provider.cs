@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SettingNetwork.Util;
 
 #nullable enable
-namespace AppSettings
+namespace SettingNetwork.Setting
 {
     public abstract class Provider<T> : ValueNotifier<T>
         where T : class, INotifyPropertyChanged, new()

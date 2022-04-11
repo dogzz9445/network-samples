@@ -4,9 +4,9 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using wpf_netcore_tcp_server.Network.Core;
+using SettingNetwork.Core;
 
-namespace wpf_netcore_tcp_server.Network
+namespace SettingNetwork
 {
     /// <summary>
     /// NetworkManagerBase

@@ -1,7 +1,7 @@
-﻿using Common;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using SettingNetwork.Util;
 
-namespace AppSettings
+namespace SettingNetwork.Setting
 {
     public abstract class ValueNotifier<T> : BindableBase
         where T : INotifyPropertyChanged

@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Collections.Specialized;
 
-namespace Common
+namespace SettingNetwork.Util
 {
     public class BindableBase : INotifyPropertyChanged
     {
