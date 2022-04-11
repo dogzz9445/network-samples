@@ -11,7 +11,7 @@ namespace SettingNetwork.Core
 {
     public class BaseTcpSession : NetCoreServer.TcpSession
     {
-        public event MessageEventHandler ReceivedMessage;
+        public event MessageEventHandler MessageReceived;
 
         public BaseTcpSession(TcpServer server) : base(server) { }
 
@@ -33,7 +33,7 @@ namespace SettingNetwork.Core
         {
             string message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
             //Console.WriteLine("Incoming: " + message);
-            ReceivedMessage?.Invoke(this, new MessageEventArgs(Id, message));
+            MessageReceived?.Invoke(this, new MessageEventArgs(Id, message));
 
             //// Multicast message to all connected sessions
             //Server.Multicast(message);
@@ -51,7 +51,7 @@ namespace SettingNetwork.Core
 
     public class BaseTcpServer : TcpServer
     {
-        public event MessageEventHandler ReceivedMessage;
+        public event MessageEventHandler MessageReceived;
 
         public BaseTcpServer(IPAddress address, int port) : base(address, port)
         {
@@ -60,18 +60,18 @@ namespace SettingNetwork.Core
         protected override TcpSession CreateSession()
         {
             var session = new BaseTcpSession(this);
-            session.ReceivedMessage += RaiseReceivedMessageEvent;
+            session.MessageReceived += RaiseMessageReceivedEvent;
             return session;
         }
 
-        public void RaiseReceivedMessageEvent(object sender, MessageEventArgs eventArgs)
+        public void RaiseMessageReceivedEvent(object sender, MessageEventArgs eventArgs)
         {
-            ReceivedMessage?.Invoke(sender, eventArgs);
+            MessageReceived?.Invoke(sender, eventArgs);
         }
 
         protected override void OnDisconnected(TcpSession session)
         {
-            (session as BaseTcpSession).ReceivedMessage -= RaiseReceivedMessageEvent;
+            (session as BaseTcpSession).MessageReceived -= RaiseMessageReceivedEvent;
             base.OnDisconnected(session);
         }
 

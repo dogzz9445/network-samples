@@ -6,15 +6,23 @@ using System.Threading.Tasks;
 
 namespace SettingNetwork.Core
 {
+    public enum MessageType
+    {
+        None,
+        Packet,
+    }
+
     public class MessageEventArgs : EventArgs
     {
         public Guid Id;
+        public MessageType MessageType;
         public string Message;
 
-        public MessageEventArgs(Guid id, string message)
+        public MessageEventArgs(Guid id, string message, MessageType type = MessageType.None)
         {
             Id = id;
             Message = message;
+            MessageType = type;
         }
     }
 

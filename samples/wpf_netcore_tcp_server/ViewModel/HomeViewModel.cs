@@ -43,7 +43,7 @@ namespace wpf_netcore_tcp_server.ViewModel
         {
             _networkManager = new NetworkManager();
             Messages = new ObservableCollection<string>();
-            _networkManager.ReceivedMessage += OnMessageReceived;
+            _networkManager.MessageReceived += OnMessageReceived;
         }
 
         private async void OnMessageReceived(object sender, MessageEventArgs e)

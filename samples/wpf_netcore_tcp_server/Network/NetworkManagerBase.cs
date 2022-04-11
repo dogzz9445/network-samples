@@ -13,14 +13,14 @@ namespace SettingNetwork
     /// </summary>
     public class NetworkManagerBase
     {
-        public event MessageEventHandler ReceivedMessage;
+        public event MessageEventHandler MessageReceived;
         protected NetworkModule module;
         public NetworkModule Module { get => module; set => module = value; }
 
         public NetworkManagerBase()
         {
             Module = new NetworkModule();
-            Module.ReceivedMessage += ReceivedMessage;
+            Module.MessageReceived += MessageReceived;
         }
 
         public void Send(int destinationId, string message, ProtocolType protocolType = ProtocolType.Tcp)

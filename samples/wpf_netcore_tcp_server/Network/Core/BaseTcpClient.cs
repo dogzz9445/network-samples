@@ -11,7 +11,7 @@ namespace SettingNetwork.Core
 {
     public class BaseTcpClient : NetCoreServer.TcpClient
     {
-        public event MessageEventHandler ReceivedMessage;
+        public event MessageEventHandler MessageReceived;
 
         private bool _stop;
 
@@ -46,7 +46,7 @@ namespace SettingNetwork.Core
         {
             string message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
             // Console.WriteLine(Encoding.UTF8.GetString(buffer, (int)offset, (int)size));
-            ReceivedMessage?.Invoke(this, new MessageEventArgs(Id, message));
+            MessageReceived?.Invoke(this, new MessageEventArgs(Id, message));
         }
 
         protected override void OnError(SocketError error)

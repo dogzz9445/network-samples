@@ -15,7 +15,7 @@ namespace SettingNetwork
 {
     public class NetworkModule : Consumer<NetworkSettingsController, NetworkSettings>
     {
-        public event MessageEventHandler ReceivedMessage;
+        public event MessageEventHandler MessageReceived;
         private NetworkSettings _settings;
         private BaseTcpServer _tcpServer;
         private BaseFileTcpServer _fileServer;
@@ -44,7 +44,7 @@ namespace SettingNetwork
 
             if (_tcpServer != null)
             {
-                _tcpServer.ReceivedMessage -= RaiseReceivedMessage;
+                _tcpServer.MessageReceived -= RaiseMessageReceived;
                 _tcpServer.Stop();
                 Log("TCP Server Stopped...");
                 _tcpServer.Dispose();
@@ -96,7 +96,7 @@ namespace SettingNetwork
                 _tcpServer = new BaseTcpServer(IPAddress.Any, hostComputerInfo.TcpPort ?? 0);
                 _tcpServer.Start();
                 Log("TCP Server Started...");
-                _tcpServer.ReceivedMessage += RaiseReceivedMessage;
+                _tcpServer.MessageReceived += RaiseMessageReceived;
             }
             if (hostComputerInfo.UseUdpServer ?? false)
             {
@@ -204,10 +204,10 @@ namespace SettingNetwork
             _fileTcpClients[destinationId].SendFile(filename);
         }
 
-        private void RaiseReceivedMessage(object sender, MessageEventArgs eventArgs)
+        private void RaiseMessageReceived(object sender, MessageEventArgs eventArgs)
         {
             Log($"Received: from [{eventArgs.Id}] message [{eventArgs.Message}]");
-            ReceivedMessage?.Invoke(sender, eventArgs);
+            MessageReceived?.Invoke(sender, eventArgs);
         }
 
         public void RefreshSessions()

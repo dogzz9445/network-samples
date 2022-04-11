@@ -14,7 +14,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HomePage">
     <Page.Resources>
-        <DataTemplate x:Key="ReceivedMessageListDataTemplate">
+        <DataTemplate x:Key="MessageReceivedListDataTemplate">
             <materialDesign:Card>
                 <TextBlock Style="{DynamicResource DarkStyle}"
                            Text="{Binding }" />
@@ -77,7 +77,7 @@
                 <Border BorderBrush="#32FFFFFF" BorderThickness="1" Margin="8">
                 <StackPanel>
                     <TextBlock Text="로그" HorizontalAlignment="Center" />
-                    <ListView ItemTemplate="{DynamicResource ReceivedMessageListDataTemplate}"
+                    <ListView ItemTemplate="{DynamicResource MessageReceivedListDataTemplate}"
                               ItemsSource="{Binding Messages}" />
                 </StackPanel>
                 </Border>
