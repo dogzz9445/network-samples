@@ -8,17 +8,12 @@ using wpf_netcore_tcp_server.Network.Core;
 
 namespace wpf_netcore_tcp_server.Network
 {
-    public class Packet
-    {
-
-    }
     /// <summary>
-    /// 브릿지 패턴
+    /// NetworkManagerBase
     /// </summary>
-    public abstract class NetworkManagerBase
+    public class NetworkManagerBase
     {
-        public EventHandler<Packet> Received;
-        public event PacketEventHandler ReceivedMessage;
+        public event MessageEventHandler ReceivedMessage;
         protected NetworkModule module;
         public NetworkModule Module { get => module; set => module = value; }
 
@@ -26,19 +21,16 @@ namespace wpf_netcore_tcp_server.Network
         {
             Module = new NetworkModule();
             Module.ReceivedMessage += ReceivedMessage;
-            ReceivedMessage += OnReceivedMessage;
         }
-
-        protected abstract void OnReceivedMessage(object sender, PacketEventArgs eventArgs);
 
         public void Send(int destinationId, string message, ProtocolType protocolType = ProtocolType.Tcp)
         {
             Module?.Send(destinationId, message, protocolType);
         }
 
-        public void SendFile(int destinationId, string message, ProtocolType protocolType = ProtocolType.Tcp)
+        public void SendFile(int destinationId, string filename)
         {
-            Module?.Send(destinationId, message, protocolType);
+            Module?.SendFile(destinationId, filename);
         }
     }
 }

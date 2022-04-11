@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace wpf_netcore_tcp_server.Network.Core
 {
-    public class PacketEventArgs : EventArgs
+    public class MessageEventArgs : EventArgs
     {
         public Guid Id;
         public string Message;
 
-        public PacketEventArgs(Guid id, string message)
+        public MessageEventArgs(Guid id, string message)
         {
             Id = id;
             Message = message;
         }
     }
 
-    public delegate void PacketEventHandler(object sender, PacketEventArgs e);
+    public delegate void MessageEventHandler(object sender, MessageEventArgs e);
 }

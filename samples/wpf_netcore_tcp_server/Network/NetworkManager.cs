@@ -15,7 +15,7 @@ namespace Network
 {
     public class NetworkManager : NetworkManagerBase
     {
-        protected override void OnReceivedMessage(object sender, PacketEventArgs eventArgs)
+        protected void OnReceivedMessage(object sender, MessageEventArgs eventArgs)
         {
             Console.WriteLine("Received");
         }

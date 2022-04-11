@@ -15,7 +15,7 @@ namespace wpf_netcore_tcp_server.Network
 {
     public class NetworkModule : Consumer<NetworkSettingsController, NetworkSettings>
     {
-        public event PacketEventHandler ReceivedMessage;
+        public event MessageEventHandler ReceivedMessage;
         private NetworkSettings _settings;
         private BaseTcpServer _tcpServer;
         private BaseFileTcpServer _fileServer;
@@ -204,7 +204,7 @@ namespace wpf_netcore_tcp_server.Network
             _fileTcpClients[destinationId].SendFile(filename);
         }
 
-        private void RaiseReceivedMessage(object sender, PacketEventArgs eventArgs)
+        private void RaiseReceivedMessage(object sender, MessageEventArgs eventArgs)
         {
             Log($"Received: from [{eventArgs.Id}] message [{eventArgs.Message}]");
             ReceivedMessage?.Invoke(sender, eventArgs);

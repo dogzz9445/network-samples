@@ -42,10 +42,10 @@ namespace wpf_netcore_tcp_server.ViewModel
         {
             _networkManager = new NetworkManager();
             Messages = new ObservableCollection<string>();
-            _networkManager.ReceivedMessage += _networkManager_ReceivedMessage;
+            _networkManager.ReceivedMessage += OnMessageReceived;
         }
 
-        private async void _networkManager_ReceivedMessage(object sender, PacketEventArgs e)
+        private async void OnMessageReceived(object sender, MessageEventArgs e)
         {
             await callOnUiThread(() => Messages.Add(e.Message));
         }

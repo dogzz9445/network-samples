@@ -11,7 +11,7 @@ namespace wpf_netcore_tcp_server.Network.Core
 {
     public class BaseTcpSession : NetCoreServer.TcpSession
     {
-        public event PacketEventHandler ReceivedMessage;
+        public event MessageEventHandler ReceivedMessage;
 
         public BaseTcpSession(TcpServer server) : base(server) { }
 
@@ -33,7 +33,7 @@ namespace wpf_netcore_tcp_server.Network.Core
         {
             string message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
             //Console.WriteLine("Incoming: " + message);
-            ReceivedMessage?.Invoke(this, new PacketEventArgs(Id, message));
+            ReceivedMessage?.Invoke(this, new MessageEventArgs(Id, message));
 
             //// Multicast message to all connected sessions
             //Server.Multicast(message);
@@ -51,7 +51,7 @@ namespace wpf_netcore_tcp_server.Network.Core
 
     public class BaseTcpServer : TcpServer
     {
-        public event PacketEventHandler ReceivedMessage;
+        public event MessageEventHandler ReceivedMessage;
 
         public BaseTcpServer(IPAddress address, int port) : base(address, port)
         {
@@ -64,7 +64,7 @@ namespace wpf_netcore_tcp_server.Network.Core
             return session;
         }
 
-        public void RaiseReceivedMessageEvent(object sender, PacketEventArgs eventArgs)
+        public void RaiseReceivedMessageEvent(object sender, MessageEventArgs eventArgs)
         {
             ReceivedMessage?.Invoke(sender, eventArgs);
         }

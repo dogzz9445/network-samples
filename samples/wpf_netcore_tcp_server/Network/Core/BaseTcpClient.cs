@@ -11,7 +11,7 @@ namespace wpf_netcore_tcp_server.Network.Core
 {
     public class BaseTcpClient : NetCoreServer.TcpClient
     {
-        public event PacketEventHandler ReceivedMessage;
+        public event MessageEventHandler ReceivedMessage;
 
         private bool _stop;
 
@@ -46,7 +46,7 @@ namespace wpf_netcore_tcp_server.Network.Core
         {
             string message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
             // Console.WriteLine(Encoding.UTF8.GetString(buffer, (int)offset, (int)size));
-            ReceivedMessage?.Invoke(this, new PacketEventArgs(Id, message));
+            ReceivedMessage?.Invoke(this, new MessageEventArgs(Id, message));
         }
 
         protected override void OnError(SocketError error)
