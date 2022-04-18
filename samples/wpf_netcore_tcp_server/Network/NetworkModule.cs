@@ -10,6 +10,7 @@ using NetCoreServer;
 using SettingNetwork.Setting;
 using SettingNetwork.Util;
 using SettingNetwork.Core;
+using SettingNetwork.Data;
 
 namespace SettingNetwork
 {
@@ -160,8 +161,17 @@ namespace SettingNetwork
 
         }
 
-        public void Send(int destinationId, string message, ProtocolType protocolType = ProtocolType.Tcp)
+        public void Send(int destinationId, string message, ProtocolType protocolType = ProtocolType.Tcp, MessageType messageType = MessageType.None)
         {
+            //byte[] buffer = null;
+            //switch (messageType)
+            //{
+            //    case MessageType.None:
+            //        new Message().
+
+            //    case MessageType.Packet:
+            //        break;
+            //}
             switch (protocolType)
             {
                 case ProtocolType.Tcp:

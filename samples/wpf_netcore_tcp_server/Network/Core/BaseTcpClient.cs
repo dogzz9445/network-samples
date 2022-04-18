@@ -21,6 +21,7 @@ namespace SettingNetwork.Core
         {
             _stop = true;
             DisconnectAsync();
+            // 타임아웃 설정
             while (IsConnected)
                 Thread.Yield();
         }

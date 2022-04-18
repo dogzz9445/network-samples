@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace SettingNetwork.Data
 {
-    [Serializable]
-    public partial class Packet
+    public enum MessageType
     {
-        public int From;
-        public int To;
+        None,
+        Packet,
+    }
+
+    [Serializable]
+    public partial class Message
+    {
+        public MessageType Type;
         public byte[] Data;
     }
 }

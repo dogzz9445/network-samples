@@ -51,6 +51,10 @@ namespace SettingNetwork.Core
                 {
                     Console.WriteLine(e.ToString());
                 }
+                finally
+                {
+                    Socket.Close();
+                }
             }
         }
 

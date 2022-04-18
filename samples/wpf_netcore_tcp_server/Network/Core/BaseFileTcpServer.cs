@@ -11,13 +11,13 @@ namespace SettingNetwork.Core
     {
         private bool _isInitialized = false;
         private bool _isSaveFileAbsolutePath;
-        private string _fileSavedDirectory = "./Data";
+        private string _fileSavedDirectory = null;
         FileStream _fileStream = null;
 
-        public BaseFileTcpSession(TcpServer server, bool isSaveFileAbsolutePath, string fileSaveDirectory) : base(server)
+        public BaseFileTcpSession(TcpServer server, bool isSaveFileAbsolutePath, string fileSavedDirectory) : base(server)
         {
             _isSaveFileAbsolutePath = isSaveFileAbsolutePath;
-            _fileSavedDirectory = fileSaveDirectory;
+            _fileSavedDirectory = fileSavedDirectory ?? throw new ArgumentException("Parameter cannot be null", nameof(fileSavedDirectory));
         }
 
         protected override void OnConnected()
@@ -31,7 +31,6 @@ namespace SettingNetwork.Core
 
         protected override void OnDisconnected()
         {
-            //Console.WriteLine($"Chat TCP session with Id {Id} disconnected!");
             if (_fileStream != null)
             {
                 _fileStream.Close();
@@ -80,12 +79,12 @@ namespace SettingNetwork.Core
     public class BaseFileTcpServer : TcpServer
     {
         bool _isSaveFileAbsolutePath = false;
-        string _fileSavedDirectory = "./Data";
+        string _fileSavedDirectory = null;
 
         public BaseFileTcpServer(IPAddress address, int port, bool isSaveFileAbsolutePath, string fileSavedDirectory) : base(address, port)
         {
             _isSaveFileAbsolutePath = isSaveFileAbsolutePath;
-            _fileSavedDirectory = fileSavedDirectory;
+            _fileSavedDirectory = fileSavedDirectory ?? throw new ArgumentException("Parameter cannot be null", nameof(fileSavedDirectory));
         }
 
         protected override TcpSession CreateSession()
