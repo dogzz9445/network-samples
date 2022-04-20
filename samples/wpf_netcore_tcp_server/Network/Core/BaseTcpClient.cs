@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NetCoreServer;
+using Newtonsoft.Json;
 
-namespace SettingNetwork.Core
+namespace SettingNetwork
 {
     public class BaseTcpClient : NetCoreServer.TcpClient
     {
-        public event MessageEventHandler MessageReceived;
+        public event EventHandler<string> DataReceived;
 
         private bool _stop;
 
@@ -45,9 +46,8 @@ namespace SettingNetwork.Core
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            string message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-            // Console.WriteLine(Encoding.UTF8.GetString(buffer, (int)offset, (int)size));
-            MessageReceived?.Invoke(this, new MessageEventArgs(Id, message));
+            string data = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
+            DataReceived?.Invoke(this, data);
         }
 
         protected override void OnError(SocketError error)

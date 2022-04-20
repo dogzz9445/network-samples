@@ -1,40 +1,65 @@
 ﻿using System;
 using System.Net.Sockets;
-using SettingNetwork.Core;
-using SettingNetwork.Data;
 
 namespace SettingNetwork
 {
     /// <summary>
     /// NetworkManagerBase
     /// </summary>
-    public class NetworkManagerBase
+    public class NetworkManagerBase : IDisposable
     {
+        public event EventHandler<Message> MessageReceived;
         public event EventHandler<Packet> PacketReceived;
-        public event MessageEventHandler MessageReceived;
+
         protected NetworkModule module = null;
         public NetworkModule Module { get => module; set => module = value; }
 
         public NetworkManagerBase()
         {
             Module = new NetworkModule();
-            Module.MessageReceived += MessageReceived;
+            Module.MessageReceived += OnMessageReceived;
+            Module.PacketReceived += PacketReceived;
         }
 
-        public void SendNonePackagedMessage(int destinationId, string message,
+        public void OnMessageReceived(object sender, Message message)
+        {
+            MessageReceived?.Invoke(sender, message);
+        }
+
+        public void OnPacketReceived(object sender, Packet packet)
+        {
+            PacketReceived?.Invoke(sender, packet);
+        }
+
+        void IDisposable.Dispose()
+        {
+            if (Module != null)
+            {
+                Module.MessageReceived -= MessageReceived;
+                Module.PacketReceived -= PacketReceived;
+            }
+        }
+
+        public void Send(int destinationId, string message,
             ProtocolType protocolType = ProtocolType.Tcp)
         {
-            Module?.Send(destinationId, message, protocolType, MessageType.None);
+            Module?.Send(destinationId, message, protocolType);
         }
 
-        public void Send(int destinationId, string message, ProtocolType protocolType = ProtocolType.Tcp, MessageType messageType = MessageType.None)
+        public void Send(int destinationId, Message message, ProtocolType protocolType = ProtocolType.Tcp)
         {
-            Module?.Send(destinationId, message, protocolType, messageType);
+            Module?.Send(destinationId, message, protocolType);
+        }
+
+        public void Send(int destinationId, Packet packet, ProtocolType protocolType = ProtocolType.Tcp)
+        {
+            Module?.Send(destinationId, packet, protocolType);
         }
 
         public void SendFile(int destinationId, string filename)
         {
             Module?.SendFile(destinationId, filename);
         }
+
     }
 }

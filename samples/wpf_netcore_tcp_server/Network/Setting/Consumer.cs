@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace SettingNetwork.Setting
+namespace SettingNetwork
 {
     public abstract class Consumer<T, S> : INotifyPropertyChanged, IDisposable
         where T : Provider<S>, new()
