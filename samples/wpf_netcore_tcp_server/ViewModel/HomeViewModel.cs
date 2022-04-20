@@ -87,24 +87,17 @@ namespace wpf_netcore_tcp_server.ViewModel
                 }
             });
 
-            //Task.Factory.StartNew(async () =>
-            //{
-            //    while (true)
-            //    {
-            //        await callOnUiThread(() =>
-            //        {
-
-            //            Logs.Add($"{JsonConvert.SerializeObject(message)}");
-            //        }
-            //        );
-            //        Logs.Add($"{JsonConvert.SerializeObject(message)}");
-            //        for (int i = 0; i < 1000; i++)
-            //        {
-            //            _networkManager.Send(0, "hihihii");
-            //        }
-            //        Thread.Sleep(100);
-            //    }
-            //});
+            Task.Factory.StartNew(() =>
+            {
+                while (true)
+                {
+                    for (int i = 0; i < 1000; i++)
+                    {
+                        _networkManager.Send(0, "hihihii");
+                    }
+                    Thread.Sleep(100);
+                }
+            });
         }
 
         private void OnMessageReceived(object sender, Message message)

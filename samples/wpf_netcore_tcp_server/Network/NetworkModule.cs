@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NetCoreServer;
@@ -154,7 +155,15 @@ namespace SettingNetwork
             {
                 return;
             }
-            _tcpClients[destinationId].SendAsync(message);
+            //message = message + (new Random(10)).Next(0, 10);
+            byte[] bufMessage = Encoding.UTF8.GetBytes(message);
+            int length = bufMessage.Length;
+            string testMessage = Encoding.UTF8.GetString(bufMessage, 0, length);
+            byte[] buffer = new byte[4 + length];
+            byte[] bufLength = BitConverter.GetBytes(length);
+            Array.Copy(bufLength, 0, buffer, 0, 4);
+            Array.Copy(bufMessage, 0, buffer, 4, length);
+            _tcpClients[destinationId].SendAsync(buffer);
             Log($"Sended to [{destinationId}] message [{message}]");
         }
 
