@@ -49,7 +49,7 @@ namespace SettingNetwork
             int readOffset = 0;
             byte[] length = new byte[4];
             byte[] bufferToRead = new byte[65536];
-            if (_bufferedStream.CanRead)
+            while (_bufferedStream.CanRead)
             {
                 if (size < readOffset + 4)
                 {
@@ -76,6 +76,7 @@ namespace SettingNetwork
                     return;
                 }
                 readOffset = readOffset + nReadBytes;
+                _bufferedStream.Flush();
 
                 string data = Encoding.UTF8.GetString(bufferToRead, 4, nReadBytes);
                 Message message = JsonConvert.DeserializeObject<Message>(data);

@@ -93,7 +93,7 @@ namespace wpf_netcore_tcp_server.ViewModel
                 {
                     for (int i = 0; i < 1000; i++)
                     {
-                        _networkManager.Send(0, "hihihii");
+                        _networkManager.Send(0, $"hihihii {i}");
                     }
                     Thread.Sleep(100);
                 }
