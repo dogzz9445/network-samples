@@ -87,15 +87,15 @@ namespace wpf_netcore_tcp_server.ViewModel
                 }
             });
 
-            Task.Factory.StartNew(() =>
+            Task.Factory.StartNew(async () =>
             {
-                while (true)
+                await Task.Yield();
+                Thread.Sleep(5000);
+                for (int i = 0; i < 1000; i++)
                 {
-                    for (int i = 0; i < 1000; i++)
-                    {
-                        _networkManager.Send(0, $"hihihii {i}");
-                    }
+                    _networkManager.Send(0, $"hihihii {i}");
                     Thread.Sleep(100);
+                    //Task.Yield();
                 }
             });
         }

@@ -16,13 +16,11 @@ namespace SettingNetwork
     {
         public event EventHandler<Message> MessageReceived;
         private Stream _stream;
-        private BufferedStream _bufferedStream;
         int _offset = 0;
 
         public BaseTcpSession(TcpServer server) : base(server)
         {
             _stream = new MemoryStream();
-            _bufferedStream = new BufferedStream(_stream);
         }
 
         protected override void OnConnected()
@@ -39,62 +37,62 @@ namespace SettingNetwork
             //Console.WriteLine($"Chat TCP session with Id {Id} disconnected!");
         }
 
+        private int _index = 0;
+        private byte[] _length = new byte[4];
+        private byte[] _bufferToRead = new byte[65536];
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            string aaa = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-            _bufferedStream.Write(buffer, (int)offset, (int)size);
-            _bufferedStream.Position = 0;
-            _bufferedStream.Flush();
+            _index++;
+            _stream.Write(buffer, (int)offset, (int)size);
+            _stream.Flush();
 
             int readOffset = 0;
-            byte[] length = new byte[4];
-            byte[] bufferToRead = new byte[65536];
-            while (_bufferedStream.CanRead)
+            while (_stream.CanRead)
             {
                 if (size < readOffset + 4)
                 {
                     return;
                 }
-                int nReadLengthBytes = _bufferedStream.Read(length, 0, 4);
+                int nReadLengthBytes = _stream.Read(_length, 0, 4);
                 if (nReadLengthBytes < 4)
                 {
-                    _bufferedStream.Seek(-nReadLengthBytes, SeekOrigin.Current);
+                    _stream.Seek(-nReadLengthBytes, SeekOrigin.Current);
                     return;
                 }
                 readOffset = readOffset + 4;
 
-                int nExpectBytes = BitConverter.ToInt32(length, 0);
+                int nExpectBytes = BitConverter.ToInt32(_length, 0);
                 if (size < readOffset + nExpectBytes)
                 {
-                    _bufferedStream.Seek(-nReadLengthBytes, SeekOrigin.Current);
+                    _stream.Seek(-nReadLengthBytes, SeekOrigin.Current);
                     return;
                 }
-                int nReadBytes = _bufferedStream.Read(bufferToRead, 4, nExpectBytes);
+                int nReadBytes = _stream.Read(_bufferToRead, 4, nExpectBytes);
                 if (nReadBytes < nExpectBytes)
                 {
-                    _bufferedStream.Seek(-(nReadLengthBytes + nReadBytes), SeekOrigin.Current);
+                    _stream.Seek(-(nReadLengthBytes + nReadBytes), SeekOrigin.Current);
                     return;
                 }
                 readOffset = readOffset + nReadBytes;
-                _bufferedStream.Flush();
+                _stream.Flush();
 
-                string data = Encoding.UTF8.GetString(bufferToRead, 4, nReadBytes);
+                string data = Encoding.UTF8.GetString(_bufferToRead, 4, nReadBytes);
                 Message message = JsonConvert.DeserializeObject<Message>(data);
+                message.Data = $"{message.Data} index {_index}";
                 MessageReceived?.Invoke(this, message);
             }
-
-            //_streamWriter.Write(data);
-            //_streamWriter.Flush();
-            //Console.WriteLine(data);
-            //MessageReceived?.Invoke(this, data);
-
-            //// Multicast message to all connected sessions
-            //Server.Multicast(message);
-
-            //// If the buffer starts with '!' the disconnect the current session
-            //if (message == "!")
-            //    Disconnect();
         }
+        //_streamWriter.Write(data);
+        //_streamWriter.Flush();
+        //Console.WriteLine(data);
+        //MessageReceived?.Invoke(this, data);
+
+        //// Multicast message to all connected sessions
+        //Server.Multicast(message);
+
+        //// If the buffer starts with '!' the disconnect the current session
+        //if (message == "!")
+        //    Disconnect();
 
         protected override void OnError(SocketError error)
         {
