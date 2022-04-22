@@ -9,18 +9,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using NetCoreServer;
 using Newtonsoft.Json;
+using Network.Util;
 
 namespace SettingNetwork
 {
     public class BaseTcpSession : NetCoreServer.TcpSession
     {
         public event EventHandler<Message> MessageReceived;
-        private Stream _stream;
+        private MessageStream _stream;
         int _offset = 0;
 
         public BaseTcpSession(TcpServer server) : base(server)
         {
-            _stream = new MemoryStream();
+            _stream = new MessageStream();
         }
 
         protected override void OnConnected()
@@ -44,10 +45,9 @@ namespace SettingNetwork
         {
             _index++;
             _stream.Write(buffer, (int)offset, (int)size);
-            _stream.Flush();
 
             int readOffset = 0;
-            while (_stream.CanRead)
+            while (_stream.CanReadMessage)
             {
                 if (size < readOffset + 4)
                 {
@@ -73,8 +73,7 @@ namespace SettingNetwork
                     _stream.Seek(-(nReadLengthBytes + nReadBytes), SeekOrigin.Current);
                     return;
                 }
-                readOffset = readOffset + nReadBytes;
-                _stream.Flush();
+                readOffset = readOffset + nReadBytes;;
 
                 string data = Encoding.UTF8.GetString(_bufferToRead, 4, nReadBytes);
                 Message message = JsonConvert.DeserializeObject<Message>(data);
