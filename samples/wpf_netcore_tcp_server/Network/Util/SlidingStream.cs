@@ -1,17 +1,13 @@
 ﻿// Reference from:
 // https://stackoverflow.com/questions/8221136/fifo-queue-buffer-specialising-in-byte-streams
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace Network.Util
+namespace SettingNetwork.Util
 {
-    public class MessageStream : Stream
+    public class SlidingStream : Stream
     {
         #region Other stream member implementations
         public override bool CanRead => true;
@@ -43,7 +39,7 @@ namespace Network.Util
 
         #endregion Other stream member implementations
 
-        public MessageStream()
+        public SlidingStream()
         {
             ReadTimeout = -1;
         }

@@ -9,49 +9,37 @@ using System.Threading;
 using System.Threading.Tasks;
 using NetCoreServer;
 using Newtonsoft.Json;
-using Network.Util;
+using SettingNetwork.Util;
 
 namespace SettingNetwork
 {
     public class BaseTcpSession : NetCoreServer.TcpSession
     {
         public event EventHandler<Message> MessageReceived;
-        private MessageStream _stream;
-        int _offset = 0;
+        private SlidingStream _stream;
+        private byte[] _length = new byte[4];
+        private byte[] _buffer = new byte[65536];
 
         public BaseTcpSession(TcpServer server) : base(server)
         {
-            _stream = new MessageStream();
+            _stream = new SlidingStream();
         }
 
         protected override void OnConnected()
         {
-            //Console.WriteLine($"Chat TCP session with Id {Id} connected!");
-
-            //// Send invite message
-            //string message = "Hello from TCP chat! Please send a message or '!' to disconnect the client!";
-            //SendAsync(message);
         }
 
         protected override void OnDisconnected()
         {
-            //Console.WriteLine($"Chat TCP session with Id {Id} disconnected!");
         }
-
-        private int _index = 0;
-        private byte[] _length = new byte[4];
-        private byte[] _bufferToRead = new byte[65536];
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            _index++;
             _stream.Write(buffer, (int)offset, (int)size);
 
             int readOffset = 0;
             while (_stream.CanRead)
             {
-                //byte[] _length = new byte[4];
-                //byte[] _bufferToRead = new byte[65536];
                 if (size < readOffset + 4)
                 {
                     return;
@@ -70,7 +58,7 @@ namespace SettingNetwork
                     // _stream.Seek(-nReadLengthBytes, SeekOrigin.Current);
                     return;
                 }
-                int nReadBytes = _stream.Read(_bufferToRead, 0, nExpectBytes);
+                int nReadBytes = _stream.Read(_buffer, 0, nExpectBytes);
                 if (nReadBytes < nExpectBytes)
                 {
                     // _stream.Seek(-(nReadLengthBytes + nReadBytes), SeekOrigin.Current);
@@ -78,23 +66,11 @@ namespace SettingNetwork
                 }
                 readOffset = readOffset + nReadBytes;
 
-                string data = Encoding.UTF8.GetString(_bufferToRead, 0, nReadBytes);
+                string data = Encoding.UTF8.GetString(_buffer, 0, nReadBytes);
                 Message message = JsonConvert.DeserializeObject<Message>(data);
-                message.Data = $"{message.Data} index {_index}";
                 MessageReceived?.Invoke(this, message);
             }
         }
-        //_streamWriter.Write(data);
-        //_streamWriter.Flush();
-        //Console.WriteLine(data);
-        //MessageReceived?.Invoke(this, data);
-
-        //// Multicast message to all connected sessions
-        //Server.Multicast(message);
-
-        //// If the buffer starts with '!' the disconnect the current session
-        //if (message == "!")
-        //    Disconnect();
 
         protected override void OnError(SocketError error)
         {

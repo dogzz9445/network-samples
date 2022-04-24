@@ -63,15 +63,6 @@ namespace SettingNetwork
                 _fileStream.Write(buffer, (int)offset, (int)size);
                 _fileStream.Flush();
             }
-            //string message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-            //Console.WriteLine("Incoming: " + message);
-
-            //// Multicast message to all connected sessions
-            //Server.Multicast(message);
-
-            //// If the buffer starts with '!' the disconnect the current session
-            //if (message == "!")
-            //    Disconnect();
         }
 
         protected override void OnError(SocketError error)

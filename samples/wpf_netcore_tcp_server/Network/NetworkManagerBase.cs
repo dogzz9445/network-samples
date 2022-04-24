@@ -11,14 +11,19 @@ namespace SettingNetwork
         public event EventHandler<Message> MessageReceived;
         public event EventHandler<Packet> PacketReceived;
 
-        protected NetworkModule module = null;
-        public NetworkModule Module { get => module; set => module = value; }
+        protected NetworkModule _module = null;
+        public NetworkModule Module 
+        { 
+            get => _module ??= new NetworkModule();
+            set => _module = value; 
+        }
 
         public NetworkManagerBase()
         {
             Module = new NetworkModule();
+
             Module.MessageReceived += OnMessageReceived;
-            Module.PacketReceived += PacketReceived;
+            Module.PacketReceived += OnPacketReceived;
         }
 
         public void OnMessageReceived(object sender, Message message)
@@ -31,19 +36,18 @@ namespace SettingNetwork
             PacketReceived?.Invoke(sender, packet);
         }
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
-            if (Module != null)
+            if (_module != null)
             {
-                Module.MessageReceived -= MessageReceived;
-                Module.PacketReceived -= PacketReceived;
+                Module.MessageReceived -= OnMessageReceived;
+                Module.PacketReceived -= OnPacketReceived;
             }
         }
 
-        public void Send(int destinationId, string message,
-            ProtocolType protocolType = ProtocolType.Tcp)
+        public void Send(int destinationId, string data, ProtocolType protocolType = ProtocolType.Tcp)
         {
-            Module?.Send(destinationId, message, protocolType);
+            Module?.Send(destinationId, data, protocolType);
         }
 
         public void Send(int destinationId, Message message, ProtocolType protocolType = ProtocolType.Tcp)
