@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 
 namespace SettingNetwork.Core
 {
-    public enum MessageType
-    {
-        None,
-        Packet,
-    }
-
     public class MessageEventArgs : EventArgs
     {
         public Guid Id;
