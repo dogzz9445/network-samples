@@ -4,7 +4,7 @@ using System.ComponentModel;
 using SettingNetwork.Util;
 
 #nullable enable
-namespace SettingNetwork.Setting
+namespace SettingNetwork
 {
     public abstract class Provider<T> : ValueNotifier<T>
         where T : class, INotifyPropertyChanged, new()

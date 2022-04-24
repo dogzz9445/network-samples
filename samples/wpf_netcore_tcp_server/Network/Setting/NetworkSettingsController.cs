@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace SettingNetwork.Setting
+namespace SettingNetwork
 {
     public class NetworkSettingsController : Provider<NetworkSettings>
     {

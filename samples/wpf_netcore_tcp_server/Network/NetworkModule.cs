@@ -4,19 +4,19 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NetCoreServer;
-using SettingNetwork.Setting;
-using SettingNetwork.Util;
-using SettingNetwork.Core;
-using SettingNetwork.Data;
+using Newtonsoft.Json;
 
 namespace SettingNetwork
 {
     public class NetworkModule : Consumer<NetworkSettingsController, NetworkSettings>
     {
-        public event MessageEventHandler MessageReceived;
+        public event EventHandler<Message> MessageReceived;
+        public event EventHandler<Packet> PacketReceived;
+
         private NetworkSettings _settings;
         private BaseTcpServer _tcpServer;
         private BaseFileTcpServer _fileServer;
@@ -38,6 +38,7 @@ namespace SettingNetwork
             foreach (var tcpClient in _tcpClients)
             {
                 Log($"TCP Clinet Stopped... {tcpClient.Key}");
+                tcpClient.Value.DataReceived -= OnDataReceived;
                 tcpClient.Value.DisconnectAndStop();
                 tcpClient.Value.Dispose();
             }
@@ -45,7 +46,7 @@ namespace SettingNetwork
 
             if (_tcpServer != null)
             {
-                _tcpServer.MessageReceived -= RaiseMessageReceived;
+                _tcpServer.MessageReceived -= OnMessageReceived;
                 _tcpServer.Stop();
                 Log("TCP Server Stopped...");
                 _tcpServer.Dispose();
@@ -54,6 +55,7 @@ namespace SettingNetwork
             if (_udpServer != null)
             {
                 _udpServer.Stop();
+                //_ucpServer.MessageReceived -= OnMessageReceived;
                 Log("UDP Server Stopped...");
                 _udpServer.Dispose();
                 _udpServer = null;
@@ -97,7 +99,7 @@ namespace SettingNetwork
                 _tcpServer = new BaseTcpServer(IPAddress.Any, hostComputerInfo.TcpPort ?? 0);
                 _tcpServer.Start();
                 Log("TCP Server Started...");
-                _tcpServer.MessageReceived += RaiseMessageReceived;
+                _tcpServer.MessageReceived += OnMessageReceived;
             }
             if (hostComputerInfo.UseUdpServer ?? false)
             {
@@ -144,6 +146,7 @@ namespace SettingNetwork
                 var ipAddress = destinationComputerInfo.IpAddress;
                 var port = destinationComputerInfo.TcpPort;
                 var tcpClient = new BaseTcpClient(ipAddress, port ?? 5000);
+                tcpClient.DataReceived += OnDataReceived;
                 tcpClient.ConnectAsync();
                 Log($"Create TCP client at ip [{ipAddress}] port [{port}]");
                 _tcpClients.Add(destinationId, tcpClient);
@@ -152,33 +155,64 @@ namespace SettingNetwork
             {
                 return;
             }
-            _tcpClients[destinationId].SendAsync(message);
+            //message = message + (new Random(10)).Next(0, 10);
+            byte[] bufMessage = Encoding.UTF8.GetBytes(message);
+            int length = bufMessage.Length;
+            string testMessage = Encoding.UTF8.GetString(bufMessage, 0, length);
+            byte[] buffer = new byte[4 + length];
+            byte[] bufLength = BitConverter.GetBytes(length);
+            Array.Copy(bufLength, 0, buffer, 0, 4);
+            Array.Copy(bufMessage, 0, buffer, 4, length);
+            _tcpClients[destinationId].SendAsync(buffer);
             Log($"Sended to [{destinationId}] message [{message}]");
         }
 
         public void SendUDP(int destinationId, string message)
         {
-
+            // TODO:
         }
 
-        public void Send(int destinationId, string message, ProtocolType protocolType = ProtocolType.Tcp, MessageType messageType = MessageType.None)
+        public void Send(int destinationId, string data, ProtocolType protocolType = ProtocolType.Tcp)
         {
-            //byte[] buffer = null;
-            //switch (messageType)
-            //{
-            //    case MessageType.None:
-            //        new Message().
+            Message message = new Message();
+            message.Type = MessageType.None;
+            message.Data = data;
+            Send(destinationId, message, protocolType);
+        }
 
-            //    case MessageType.Packet:
-            //        break;
-            //}
+        public void Send(int destinationId, Message message, ProtocolType protocolType = ProtocolType.Tcp)
+        {
+            message.Type = MessageType.None;
+
             switch (protocolType)
             {
                 case ProtocolType.Tcp:
-                    SendTCP(destinationId, message);
+                    SendTCP(destinationId, JsonConvert.SerializeObject(message));
                     break;
                 case ProtocolType.Udp:
-                    SendUDP(destinationId, message);
+                    SendUDP(destinationId, JsonConvert.SerializeObject(message));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void Send(int destinationId, Packet packet, ProtocolType protocolType = ProtocolType.Tcp)
+        {
+            packet.From = _settings.HostId ?? 0;
+            packet.To = destinationId;
+
+            Message message = new Message();
+            message.Type = MessageType.Packet;
+            message.Data = JsonConvert.SerializeObject(packet);
+
+            switch (protocolType)
+            {
+                case ProtocolType.Tcp:
+                    SendTCP(destinationId, JsonConvert.SerializeObject(packet));
+                    break;
+                case ProtocolType.Udp:
+                    SendUDP(destinationId, JsonConvert.SerializeObject(packet));
                     break;
                 default:
                     break;
@@ -214,10 +248,24 @@ namespace SettingNetwork
             _fileTcpClients[destinationId].SendFile(filename);
         }
 
-        private void RaiseMessageReceived(object sender, MessageEventArgs eventArgs)
+        private void OnMessageReceived(object sender, Message message)
         {
-            Log($"Received: from [{eventArgs.Id}] message [{eventArgs.Message}]");
-            MessageReceived?.Invoke(sender, eventArgs);
+            MessageReceived?.Invoke(sender, message);
+        }
+
+        private void OnDataReceived(object sender, string data)
+        {
+            Message message = JsonConvert.DeserializeObject<Message>(data);
+            Log($"Received: message [{message.Data}]");
+            if (message.Type == MessageType.None)
+            {
+                MessageReceived?.Invoke(sender, message);
+            }
+            else if (message.Type == MessageType.Packet)
+            {
+                Packet packet = JsonConvert.DeserializeObject<Packet>(message.Data);
+                PacketReceived?.Invoke(sender, packet);
+            }
         }
 
         public void RefreshSessions()

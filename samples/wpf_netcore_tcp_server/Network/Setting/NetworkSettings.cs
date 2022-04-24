@@ -5,7 +5,7 @@ using System.Net;
 using Newtonsoft.Json;
 using SettingNetwork.Util;
 
-namespace SettingNetwork.Setting
+namespace SettingNetwork
 {
     public class ComputerInfo : BindableBase
     {

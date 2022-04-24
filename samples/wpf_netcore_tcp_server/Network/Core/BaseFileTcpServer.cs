@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using NetCoreServer;
 
-namespace SettingNetwork.Core
+namespace SettingNetwork
 {
     public class BaseFileTcpSession : NetCoreServer.TcpSession
     {
@@ -44,11 +44,15 @@ namespace SettingNetwork.Core
             {
                 _isInitialized = true;
                 string filename = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-                var filePath = _isSaveFileAbsolutePath ?
-                    Path.Combine(_fileSavedDirectory, filename) :
+                var fileDirectory = _isSaveFileAbsolutePath ? _fileSavedDirectory :
                     Path.Combine(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName),
-                        _fileSavedDirectory, filename);
-                _fileStream = File.Create(filePath);
+                        _fileSavedDirectory);
+                var fullFilePath = Path.Combine(fileDirectory, filename);
+                if (!Directory.Exists(fileDirectory))
+                {
+                    Directory.CreateDirectory(fileDirectory);
+                }
+                _fileStream = File.Create(fullFilePath);
             }
             else
             {

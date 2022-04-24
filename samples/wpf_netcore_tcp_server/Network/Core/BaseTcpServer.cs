@@ -1,19 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using NetCoreServer;
+using Newtonsoft.Json;
+using Network.Util;
 
-namespace SettingNetwork.Core
+namespace SettingNetwork
 {
     public class BaseTcpSession : NetCoreServer.TcpSession
     {
-        public event MessageEventHandler MessageReceived;
+        public event EventHandler<Message> MessageReceived;
+        private MessageStream _stream;
+        int _offset = 0;
 
-        public BaseTcpSession(TcpServer server) : base(server) { }
+        public BaseTcpSession(TcpServer server) : base(server)
+        {
+            _stream = new MessageStream();
+        }
 
         protected override void OnConnected()
         {
@@ -29,19 +38,60 @@ namespace SettingNetwork.Core
             //Console.WriteLine($"Chat TCP session with Id {Id} disconnected!");
         }
 
+        private int _index = 0;
+        private byte[] _length = new byte[4];
+        private byte[] _bufferToRead = new byte[65536];
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            string message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
-            //Console.WriteLine("Incoming: " + message);
-            MessageReceived?.Invoke(this, new MessageEventArgs(Id, message));
+            _index++;
+            _stream.Write(buffer, (int)offset, (int)size);
 
-            //// Multicast message to all connected sessions
-            //Server.Multicast(message);
+            int readOffset = 0;
+            while (_stream.CanReadMessage)
+            {
+                if (size < readOffset + 4)
+                {
+                    return;
+                }
+                int nReadLengthBytes = _stream.Read(_length, 0, 4);
+                if (nReadLengthBytes < 4)
+                {
+                    _stream.Seek(-nReadLengthBytes, SeekOrigin.Current);
+                    return;
+                }
+                readOffset = readOffset + 4;
 
-            //// If the buffer starts with '!' the disconnect the current session
-            //if (message == "!")
-            //    Disconnect();
+                int nExpectBytes = BitConverter.ToInt32(_length, 0);
+                if (size < readOffset + nExpectBytes)
+                {
+                    _stream.Seek(-nReadLengthBytes, SeekOrigin.Current);
+                    return;
+                }
+                int nReadBytes = _stream.Read(_bufferToRead, 4, nExpectBytes);
+                if (nReadBytes < nExpectBytes)
+                {
+                    _stream.Seek(-(nReadLengthBytes + nReadBytes), SeekOrigin.Current);
+                    return;
+                }
+                readOffset = readOffset + nReadBytes;;
+
+                string data = Encoding.UTF8.GetString(_bufferToRead, 4, nReadBytes);
+                Message message = JsonConvert.DeserializeObject<Message>(data);
+                message.Data = $"{message.Data} index {_index}";
+                MessageReceived?.Invoke(this, message);
+            }
         }
+        //_streamWriter.Write(data);
+        //_streamWriter.Flush();
+        //Console.WriteLine(data);
+        //MessageReceived?.Invoke(this, data);
+
+        //// Multicast message to all connected sessions
+        //Server.Multicast(message);
+
+        //// If the buffer starts with '!' the disconnect the current session
+        //if (message == "!")
+        //    Disconnect();
 
         protected override void OnError(SocketError error)
         {
@@ -51,7 +101,7 @@ namespace SettingNetwork.Core
 
     public class BaseTcpServer : TcpServer
     {
-        public event MessageEventHandler MessageReceived;
+        public event EventHandler<Message> MessageReceived;
 
         public BaseTcpServer(IPAddress address, int port) : base(address, port)
         {
@@ -64,9 +114,9 @@ namespace SettingNetwork.Core
             return session;
         }
 
-        public void RaiseMessageReceivedEvent(object sender, MessageEventArgs eventArgs)
+        public void RaiseMessageReceivedEvent(object sender, Message data)
         {
-            MessageReceived?.Invoke(sender, eventArgs);
+            MessageReceived?.Invoke(sender, data);
         }
 
         protected override void OnDisconnected(TcpSession session)

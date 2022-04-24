@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SettingNetwork.Core
+namespace SettingNetwork
 {
-    public class MessageEventArgs : EventArgs
-    {
-        public Guid Id;
-        public MessageType MessageType;
-        public string Message;
+    //public class MessageEventArgs : EventArgs
+    //{
+    //    public Guid Id;
+    //    public MessageType MessageType;
+    //    public string Message;
 
-        public MessageEventArgs(Guid id, string message, MessageType type = MessageType.None)
-        {
-            Id = id;
-            Message = message;
-            MessageType = type;
-        }
-    }
+    //    public MessageEventArgs(Guid id, string message, MessageType type = MessageType.None)
+    //    {
+    //        Id = id;
+    //        Message = message;
+    //        MessageType = type;
+    //    }
+    //}
 
-    public delegate void MessageEventHandler(object sender, MessageEventArgs e);
+    //public delegate void MessageEventHandler(object sender, MessageEventArgs e);
 }

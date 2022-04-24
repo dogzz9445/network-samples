@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using SettingNetwork;
 using SettingNetwork.Util;
-using SettingNetwork.Core;
-using SettingNetwork.Setting;
+using Newtonsoft.Json;
+using System.Threading;
+using System.Collections.Concurrent;
 
 namespace wpf_netcore_tcp_server.ViewModel
 {
@@ -17,9 +18,21 @@ namespace wpf_netcore_tcp_server.ViewModel
         private static Func<Action, Task> callOnUiThread = async (handler) =>
             await Application.Current.Dispatcher.InvokeAsync(handler);
 
+        #region Property
         private NetworkManager _networkManager;
-        private ObservableCollection<string> _messages;
-        public ObservableCollection<string> Messages { get => _messages; set => _messages = value; }
+        private ObservableCollection<Message> _messages;
+        public ObservableCollection<Message> Messages { get => _messages; set => SetObservableProperty(ref _messages, value); }
+
+        private ObservableCollection<Packet> _packets;
+        public ObservableCollection<Packet> Packets { get => _packets; set => SetObservableProperty(ref _packets, value); }
+
+        private ObservableCollection<string> _logs;
+        public ObservableCollection<string> Logs { get => _logs; set => SetProperty(ref _logs, value); }
+
+        public ConcurrentQueue<string> datas = new ConcurrentQueue<string>();
+        #endregion
+
+        #region Commands
 
         private DelegateCommand _addHostCommand;
         public DelegateCommand AddHostCommand
@@ -38,17 +51,68 @@ namespace wpf_netcore_tcp_server.ViewModel
                     _networkManager.Module.SendFile(0, "test.txt");
                 });
         }
+        #endregion
 
         public HomeViewModel()
         {
             _networkManager = new NetworkManager();
-            Messages = new ObservableCollection<string>();
+            Messages = new ObservableCollection<Message>();
+            Packets = new ObservableCollection<Packet>();
+            Logs = new ObservableCollection<string>();
             _networkManager.MessageReceived += OnMessageReceived;
+            _networkManager.PacketReceived += OnPacketReceived;
+
+            Task.Factory.StartNew(async () =>
+            {
+                string buffer = null;
+                while (true)
+                {
+                    await callOnUiThread(() =>
+                    {
+                        for (int i = 0; i < 10; i++)
+                        {
+                            if (datas.TryDequeue(out buffer))
+                            {
+                                Logs.Add($"{buffer}");
+                            }
+                        }
+                    }
+                    );
+                    //Logs.Add($"{JsonConvert.SerializeObject(message)}");
+                    //for (int i = 0; i < 1000; i++)
+                    //{
+                    //    _networkManager.Send(0, "hihihii");
+                    //}
+                    Thread.Sleep(100);
+                }
+            });
+
+            Task.Factory.StartNew(async () =>
+            {
+                await Task.Yield();
+                Thread.Sleep(5000);
+                for (int i = 0; i < 1000; i++)
+                {
+                    _networkManager.Send(0, $"hihihii {i}");
+                    Thread.Sleep(100);
+                    //Task.Yield();
+                }
+            });
         }
 
-        private async void OnMessageReceived(object sender, MessageEventArgs e)
+        private void OnMessageReceived(object sender, Message message)
         {
-            await callOnUiThread(() => Messages.Add(e.Message));
+            //await callOnUiThread(() => Messages.Add(message));
+            //await callOnUiThread(() => 
+            datas.Enqueue(JsonConvert.SerializeObject(message));
+            //Logs.Add($"{JsonConvert.SerializeObject(message)}");
+            //);
+        }
+
+        private async void OnPacketReceived(object sender, Packet packet)
+        {
+            //await callOnUiThread(() => Packets.Add(packet));
+            await callOnUiThread(() => Logs.Add($"{JsonConvert.SerializeObject(packet)}"));
         }
     }
 }

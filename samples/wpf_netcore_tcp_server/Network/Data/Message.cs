@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SettingNetwork.Data
+namespace SettingNetwork
 {
     public enum MessageType
     {
@@ -16,6 +16,6 @@ namespace SettingNetwork.Data
     public partial class Message
     {
         public MessageType Type;
-        public byte[] Data;
+        public string Data;
     }
 }
