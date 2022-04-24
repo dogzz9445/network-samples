@@ -41,14 +41,17 @@ namespace SettingNetwork
         private int _index = 0;
         private byte[] _length = new byte[4];
         private byte[] _bufferToRead = new byte[65536];
+
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
             _index++;
             _stream.Write(buffer, (int)offset, (int)size);
 
             int readOffset = 0;
-            while (_stream.CanReadMessage)
+            while (_stream.CanRead)
             {
+                //byte[] _length = new byte[4];
+                //byte[] _bufferToRead = new byte[65536];
                 if (size < readOffset + 4)
                 {
                     return;
@@ -56,7 +59,7 @@ namespace SettingNetwork
                 int nReadLengthBytes = _stream.Read(_length, 0, 4);
                 if (nReadLengthBytes < 4)
                 {
-                    _stream.Seek(-nReadLengthBytes, SeekOrigin.Current);
+                    // _stream.Seek(-nReadLengthBytes, SeekOrigin.Current);
                     return;
                 }
                 readOffset = readOffset + 4;
@@ -64,18 +67,18 @@ namespace SettingNetwork
                 int nExpectBytes = BitConverter.ToInt32(_length, 0);
                 if (size < readOffset + nExpectBytes)
                 {
-                    _stream.Seek(-nReadLengthBytes, SeekOrigin.Current);
+                    // _stream.Seek(-nReadLengthBytes, SeekOrigin.Current);
                     return;
                 }
-                int nReadBytes = _stream.Read(_bufferToRead, 4, nExpectBytes);
+                int nReadBytes = _stream.Read(_bufferToRead, 0, nExpectBytes);
                 if (nReadBytes < nExpectBytes)
                 {
-                    _stream.Seek(-(nReadLengthBytes + nReadBytes), SeekOrigin.Current);
+                    // _stream.Seek(-(nReadLengthBytes + nReadBytes), SeekOrigin.Current);
                     return;
                 }
-                readOffset = readOffset + nReadBytes;;
+                readOffset = readOffset + nReadBytes;
 
-                string data = Encoding.UTF8.GetString(_bufferToRead, 4, nReadBytes);
+                string data = Encoding.UTF8.GetString(_bufferToRead, 0, nReadBytes);
                 Message message = JsonConvert.DeserializeObject<Message>(data);
                 message.Data = $"{message.Data} index {_index}";
                 MessageReceived?.Invoke(this, message);
