@@ -28,6 +28,8 @@ namespace SettingNetwork
         private Dictionary<int, BaseTcpClient> _tcpClients;
         private Dictionary<int, BaseFileTcpClient> _fileTcpClients;
 
+        private int _timeoutTcpSend = 30;
+
         public NetworkModule() : base()
         {
             _udpClients = new Dictionary<int, BaseUdpClient>();
@@ -154,13 +156,25 @@ namespace SettingNetwork
                 Log($"Create TCP client at ip [{ipAddress}] port [{port}]");
                 _tcpClients.Add(destinationId, tcpClient);
             }
+
             if (_tcpClients[destinationId] == null)
             {
                 return;
             }
+
+            int timeTrySend = 0;
+            while (!_tcpClients[destinationId].IsConnected)
+            {
+                if (timeTrySend > _timeoutTcpSend)
+                {
+                    return;
+                }
+                Thread.Sleep(1000);
+                timeTrySend += 1;
+            }
+
             byte[] bufMessage = Encoding.UTF8.GetBytes(message);
             int length = bufMessage.Length;
-            string testMessage = Encoding.UTF8.GetString(bufMessage, 0, length);
             byte[] buffer = new byte[4 + length];
             byte[] bufLength = BitConverter.GetBytes(length);
             Array.Copy(bufLength, 0, buffer, 0, 4);

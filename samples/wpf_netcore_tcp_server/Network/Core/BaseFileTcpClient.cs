@@ -40,7 +40,7 @@ namespace SettingNetwork
                 Thread.Yield();
             }
 
-            long sent = Send(filename);
+            long sent = Send(Path.GetFileName(filename) + "\n");
             lock (_sendLock)
             {
                 try
@@ -53,17 +53,15 @@ namespace SettingNetwork
                 }
                 finally
                 {
-                    Socket.Close();
+                    DisconnectAndStop();
                 }
             }
         }
 
-        public async void SendFile(string filename)
+        public void SendFile(string filename)
         {
-            await Task.Yield();
             Connect();
             SendFileAsync(filename);
-            DisconnectAndStop();
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)

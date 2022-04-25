@@ -43,12 +43,12 @@ namespace SettingNetwork
         {
             Console.WriteLine($"Chat TCP client disconnected a session with Id {Id}");
 
-            // Wait for a while...
-            Thread.Sleep(1000);
+            //// Wait for a while...
+            //Thread.Sleep(1000);
 
-            // Try to connect again
-            if (!_stop)
-                ConnectAsync();
+            //// Try to connect again
+            //if (!_stop)
+            //    ConnectAsync();
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)

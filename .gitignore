@@ -412,3 +412,6 @@ MigrationBackup/
 FodyWeavers.xsd
 
 *.exe
+
+# Secret
+samples/wpf_netcore_tcp_server/Network/Data/

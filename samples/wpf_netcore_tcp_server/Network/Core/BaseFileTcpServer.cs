@@ -33,6 +33,7 @@ namespace SettingNetwork
         {
             if (_fileStream != null)
             {
+                _fileStream.Flush();
                 _fileStream.Close();
             }
         }
@@ -43,7 +44,15 @@ namespace SettingNetwork
             if (!_isInitialized)
             {
                 _isInitialized = true;
-                string filename = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
+                int index = (int)offset;
+                for (; index < size; index++)
+                {
+                    if (buffer[index] == 0xA)
+                    {
+                        break;
+                    }
+                }
+                string filename = Encoding.UTF8.GetString(buffer, (int)offset, (int)index);
                 var fileDirectory = _isSaveFileAbsolutePath ? _fileSavedDirectory :
                     Path.Combine(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName),
                         _fileSavedDirectory);
@@ -53,6 +62,12 @@ namespace SettingNetwork
                     Directory.CreateDirectory(fileDirectory);
                 }
                 _fileStream = File.Create(fullFilePath);
+                int indexOutOfFilename = index + 1;
+                if (size <= indexOutOfFilename)
+                {
+                    _fileStream.Write(buffer, (int)indexOutOfFilename, (int)size - indexOutOfFilename);
+                    _fileStream.Flush();
+                }
             }
             else
             {

@@ -13,8 +13,8 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Title="TCP 서버"
-        Height="450"
-        Width="800">
+        Height="720"
+        Width="1080">
 
     <Frame Source="View/HomePage.xaml" />
 </Window>

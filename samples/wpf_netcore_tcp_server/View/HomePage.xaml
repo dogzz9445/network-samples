@@ -6,13 +6,14 @@
       xmlns:local="clr-namespace:wpf_netcore_tcp_server.View"
       xmlns:settingNetwork="clr-namespace:SettingNetwork"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:common="clr-namespace:Common"
       mc:Ignorable="d"
       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
       TextElement.FontWeight="Regular"
       TextElement.FontSize="13"
       TextOptions.TextFormattingMode="Ideal"
       TextOptions.TextRenderingMode="Auto"
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="720" d:DesignWidth="1080"
       Title="HomePage">
     <Page.Resources>
         <DataTemplate x:Key="MessageReceivedListDataTemplate">
@@ -21,56 +22,100 @@
                            Text="{Binding }" />
             </materialDesign:Card>
         </DataTemplate>
+
+        <common:StringToIntConverter x:Key="StringToIntConverter" />
+        <common:IntToStringConverter x:Key="IntToStringConverter" />
     </Page.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="96" />
+            <RowDefinition Height="240" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="96" />
         </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Margin="8">
-            <TextBlock Text="헤드"
+            <TextBlock Text="테스트 버튼"
                        Margin="8"
                        HorizontalAlignment="Center" />
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="8">
+                <!--<Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
                         Command="{Binding AddHostCommand}"
                         HorizontalAlignment="Center"
-                        Content="호스트 추가" 
-                        Margin="8"/>
+                        Content="호스트 추가"
+                        Margin="8" />-->
+                <materialDesign:Card Margin="8"
+                                     Width="100"
+                                     Background="{StaticResource MaterialDesignCardBackground}">
+                    <StackPanel>
+                        <TextBlock Text="보낼 아이디"
+                                   Margin="8"
+                                   HorizontalAlignment="Center" />
+                        <TextBox Text="{Binding TargetId, Mode=TwoWay, Converter={StaticResource IntToStringConverter}, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" Style="{StaticResource MaterialDesignTextBox}" />
+                    </StackPanel>
+                </materialDesign:Card>
+                <materialDesign:Card Margin="8"
+                                     Width="480"
+                                     Background="{StaticResource MaterialDesignCardBackground}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <TextBlock Text="전송할 파일"
+                                       Margin="8"
+                                       HorizontalAlignment="Center" />
+                            <Button Content="파일 선택"
+                                    Command="{Binding SelectFileCommand}"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding SelectedFilename}"
+                                   HorizontalAlignment="Center"
+                                   Style="{StaticResource MaterialDesignTextBlock}" />
+                    </StackPanel>
+                </materialDesign:Card>
                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
                         Command="{Binding SendFileCommand}"
                         HorizontalAlignment="Center"
                         Content="파일 전송"
                         Margin="8" />
-                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"
-                        Content="버튼"
+                        Margin="8">
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendTest1Command}"
+                        HorizontalAlignment="Center"
+                        Content="전송 샘플데이터 1개"
                         Margin="8" />
                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendTest2Command}"
                         HorizontalAlignment="Center"
-                        Content="버튼"
+                        Content="과부하 전송(1000개)"
+                        Margin="8" />
+                <StackPanel Margin="8">
+                    <TextBlock Text="주기적으로 전송"/>
+                    <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                  IsChecked="{Binding IsSendingPeriod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendPacket1Command}"
+                        HorizontalAlignment="Center"
+                        Content="패킷1"
                         Margin="8" />
                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendPacket2Command}"
                         HorizontalAlignment="Center"
-                        Content="버튼"
+                        Content="패킷2"
                         Margin="8" />
                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendPacket3Command}"
                         HorizontalAlignment="Center"
-                        Content="버튼"
+                        Content="패킷3"
                         Margin="8" />
                 <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendPacket4Command}"
                         HorizontalAlignment="Center"
-                        Content="버튼"
-                        Margin="8" />
-                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                        HorizontalAlignment="Center"
-                        Content="버튼"
-                        Margin="8" />
-                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                        HorizontalAlignment="Center"
-                        Content="버튼"
+                        Content="패킷4"
                         Margin="8" />
             </StackPanel>
             </StackPanel>
