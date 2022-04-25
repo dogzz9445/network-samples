@@ -16,6 +16,5 @@ namespace SettingNetwork
         public NetworkManager() : base()
         {
         }
-
     }
 }
