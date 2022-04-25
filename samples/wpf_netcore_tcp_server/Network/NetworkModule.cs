@@ -16,6 +16,7 @@ namespace SettingNetwork
     {
         public event EventHandler<Message> MessageReceived;
         public event EventHandler<Packet> PacketReceived;
+        public event EventHandler<NetworkError> ErrorReceived;
 
         private NetworkSettings _settings;
         private BaseTcpServer _tcpServer;
@@ -164,7 +165,7 @@ namespace SettingNetwork
             byte[] bufLength = BitConverter.GetBytes(length);
             Array.Copy(bufLength, 0, buffer, 0, 4);
             Array.Copy(bufMessage, 0, buffer, 4, length);
-            _tcpClients[destinationId].SendAsync(buffer);
+            _tcpClients[destinationId].Send(buffer);
             Log($"Sended to [{destinationId}] message [{message}]");
         }
 
@@ -263,6 +264,11 @@ namespace SettingNetwork
             {
                 MessageReceived?.Invoke(sender, message);
             }
+        }
+
+        private void OnErrorReceived(object sender, NetworkError error)
+        {
+            ErrorReceived?.Invoke(sender, error);
         }
 
         public void RefreshSessions()

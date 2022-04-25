@@ -10,12 +10,13 @@ namespace SettingNetwork
     {
         public event EventHandler<Message> MessageReceived;
         public event EventHandler<Packet> PacketReceived;
+        public event EventHandler<NetworkError> ErrorReceived;
 
         protected NetworkModule _module = null;
         public NetworkModule Module 
         { 
             get => _module ??= new NetworkModule();
-            set => _module = value; 
+            set => _module = value;
         }
 
         public NetworkManagerBase()

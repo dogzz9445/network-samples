@@ -91,9 +91,8 @@ namespace wpf_netcore_tcp_server.ViewModel
                 }
             });
 
-            Task.Factory.StartNew(async () =>
+            Task.Factory.StartNew(() =>
             {
-                await Task.Yield();
                 Thread.Sleep(5000);
                 for (int i = 0; i < 1000; i++)
                 {

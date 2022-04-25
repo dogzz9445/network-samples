@@ -16,6 +16,7 @@ namespace SettingNetwork
     public class BaseTcpSession : NetCoreServer.TcpSession
     {
         public event EventHandler<Message> MessageReceived;
+        public event EventHandler<NetworkError> ErrorReceived;
         private SlidingStream _stream;
         private byte[] _length = new byte[4];
         private byte[] _buffer = new byte[65536];
@@ -74,13 +75,14 @@ namespace SettingNetwork
 
         protected override void OnError(SocketError error)
         {
-            Console.WriteLine($"Chat TCP session caught an error with code {error}");
+            ErrorReceived?.Invoke(this, new NetworkError() { Error = $"{error}" });
         }
     }
 
     public class BaseTcpServer : TcpServer
     {
         public event EventHandler<Message> MessageReceived;
+        public event EventHandler<NetworkError> ErrorReceived;
 
         public BaseTcpServer(IPAddress address, int port) : base(address, port)
         {
@@ -89,24 +91,41 @@ namespace SettingNetwork
         protected override TcpSession CreateSession()
         {
             var session = new BaseTcpSession(this);
-            session.MessageReceived += RaiseMessageReceivedEvent;
+            session.MessageReceived += RaiseMessageReceived;
+            session.ErrorReceived += RaiseErrorReceived;
             return session;
         }
 
-        public void RaiseMessageReceivedEvent(object sender, Message data)
+        protected override void Dispose(bool disposingManagedResources)
+        {
+            base.Dispose(disposingManagedResources);
+
+            foreach (var (guid, session) in Sessions)
+            {
+                (session as BaseTcpSession).MessageReceived -= RaiseMessageReceived;
+                (session as BaseTcpSession).ErrorReceived -= RaiseErrorReceived;
+            }
+        }
+
+        public void RaiseErrorReceived(object sender, NetworkError error)
+        {
+            ErrorReceived?.Invoke(this, error);
+        }
+
+        public void RaiseMessageReceived(object sender, Message data)
         {
             MessageReceived?.Invoke(sender, data);
         }
 
         protected override void OnDisconnected(TcpSession session)
         {
-            (session as BaseTcpSession).MessageReceived -= RaiseMessageReceivedEvent;
+            (session as BaseTcpSession).MessageReceived -= RaiseMessageReceived;
             base.OnDisconnected(session);
         }
 
         protected override void OnError(SocketError error)
         {
-            Console.WriteLine($"Chat TCP server caught an error with code {error}");
+            RaiseErrorReceived(this, new NetworkError() { Error = $"{error}" });
         }
     }
 }
