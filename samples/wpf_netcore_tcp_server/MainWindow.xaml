@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:wpf_netcore_tcp_server"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -16,5 +17,27 @@
         Height="720"
         Width="1080">
 
-    <Frame Source="View/HomePage.xaml" />
+    <TabControl Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
+                Background="Transparent">
+        <TabItem ToolTip="홈"
+                 Tag="HomePage"
+                 Style="{StaticResource MaterialDesignNavigationRailTabItem}">
+            <TabItem.Header>
+                <materialDesign:PackIcon Kind="Home"
+                                         Width="32"
+                                         Height="32" />
+            </TabItem.Header>
+            <Frame Source="/View/HomePage.xaml" />
+        </TabItem>
+        <TabItem ToolTip="컴퓨터 설정"
+                 Tag="ComputerSettingPage"
+                 Style="{StaticResource MaterialDesignNavigationRailTabItem}">
+            <TabItem.Header>
+                <materialDesign:PackIcon Kind="MonitorEdit"
+                                         Width="32"
+                                         Height="32" />
+            </TabItem.Header>
+            <Frame Source="/View/RestClientPage.xaml" />
+        </TabItem>
+    </TabControl>
 </Window>
