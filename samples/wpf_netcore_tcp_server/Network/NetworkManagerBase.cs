@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NetCoreServer;
+using System;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace SettingNetwork
 {
@@ -27,6 +29,15 @@ namespace SettingNetwork
             Module.PacketReceived += OnPacketReceived;
         }
 
+        public void Dispose()
+        {
+            if (_module != null)
+            {
+                Module.MessageReceived -= OnMessageReceived;
+                Module.PacketReceived -= OnPacketReceived;
+            }
+        }
+
         public void OnMessageReceived(object sender, Message message)
         {
             MessageReceived?.Invoke(sender, message);
@@ -37,34 +48,44 @@ namespace SettingNetwork
             PacketReceived?.Invoke(sender, packet);
         }
 
-        public void Dispose()
-        {
-            if (_module != null)
-            {
-                Module.MessageReceived -= OnMessageReceived;
-                Module.PacketReceived -= OnPacketReceived;
-            }
-        }
-
         public void Send(int destinationId, string data, ProtocolType protocolType = ProtocolType.Tcp)
         {
-            Module?.Send(destinationId, data, protocolType);
+            Module.Send(destinationId, data, protocolType);
         }
 
         public void Send(int destinationId, Message message, ProtocolType protocolType = ProtocolType.Tcp)
         {
-            Module?.Send(destinationId, message, protocolType);
+            Module.Send(destinationId, message, protocolType);
         }
 
         public void Send(int destinationId, Packet packet, ProtocolType protocolType = ProtocolType.Tcp)
         {
-            Module?.Send(destinationId, packet, protocolType);
+            Module.Send(destinationId, packet, protocolType);
         }
 
         public void SendFile(int destinationId, string filename)
         {
-            Module?.SendFile(destinationId, filename);
+            Module.SendFile(destinationId, filename);
         }
 
+        public HttpResponse GetRequestAPI(string url)
+        {
+            return Module.GetRequestAPI(url);
+        }
+
+        public async Task<HttpResponse> GetRequestAPIAsync(string url)
+        {
+            return await Module.GetRequestAPIAsync(url);
+        }
+
+        public void GetRequestFile(string url)
+        {
+            Module.GetRequestFile(url);
+        }
+
+        public async Task<HttpResponse> GetRequestFileAsync(string url)
+        {
+            return await Module.GetRequestFileAsync(url);
+        }
     }
 }

@@ -21,8 +21,12 @@ namespace wpf_netcore_tcp_server.ViewModel
         private static Func<Action, Task> callOnUiThread = async (handler) =>
             await Application.Current.Dispatcher.InvokeAsync(handler);
 
+        private static HomeViewModel _instance = null;
+        public static HomeViewModel Instance { get => _instance; }
+
         #region Property
         private NetworkManager _networkManager;
+        public NetworkManager NetworkManager { get => _networkManager; set => _networkManager = value; }
         private ObservableCollection<Message> _messages;
         public ObservableCollection<Message> Messages { get => _messages; set => SetObservableProperty(ref _messages, value); }
 
@@ -60,7 +64,7 @@ namespace wpf_netcore_tcp_server.ViewModel
         {
             get => _sendFileCommand ??= new DelegateCommand(() =>
                 {
-                    _networkManager.Module.SendFile(TargetId, SelectedFilename);
+                    NetworkManager.Module.SendFile(TargetId, SelectedFilename);
                 });
         }
 
@@ -71,7 +75,7 @@ namespace wpf_netcore_tcp_server.ViewModel
             get => _sendTest1Command ??= new DelegateCommand(() =>
             {
                 i++;
-                _networkManager.Module.Send(TargetId, $"Test1: {i}");
+                NetworkManager.Module.Send(TargetId, $"Test1: {i}");
             });
         }
 
@@ -83,7 +87,7 @@ namespace wpf_netcore_tcp_server.ViewModel
                 await Task.Yield();
                 for (int i = 0; i < 1000; i++)
                 {
-                    _networkManager.Send(TargetId, $"hihihii {i}");
+                    NetworkManager.Send(TargetId, $"hihihii {i}");
                 }
             });
         }
@@ -93,7 +97,7 @@ namespace wpf_netcore_tcp_server.ViewModel
         {
             get => _sendPacket1Command ??= new DelegateCommand(() =>
             {
-                _networkManager.Module.Send(TargetId, new Packet() { Description = "packet" });
+                NetworkManager.Module.Send(TargetId, new Packet() { Description = "packet" });
             });
         }
 
@@ -102,7 +106,7 @@ namespace wpf_netcore_tcp_server.ViewModel
         {
             get => _sendPacket2Command ??= new DelegateCommand(() =>
             {
-                _networkManager.Module.Send(TargetId, new Hardware_Status());
+                NetworkManager.Module.Send(TargetId, new Hardware_Status());
             });
         }
 
@@ -111,7 +115,7 @@ namespace wpf_netcore_tcp_server.ViewModel
         {
             get => _sendPacket3Command ??= new DelegateCommand(() =>
             {
-                _networkManager.Module.Send(TargetId, new Scenario_Info() { ScenarioID = "123", ScenarioName = "test" });
+                NetworkManager.Module.Send(TargetId, new Scenario_Info() { ScenarioID = "123", ScenarioName = "test" });
             });
         }
 
@@ -120,7 +124,7 @@ namespace wpf_netcore_tcp_server.ViewModel
         {
             get => _sendPacket4Command ??= new DelegateCommand(() =>
             {
-                _networkManager.Module.Send(TargetId, new Instructor_Message() { InstructorMessage = "123123123" });
+                NetworkManager.Module.Send(TargetId, new Instructor_Message() { InstructorMessage = "123123123" });
             });
         }
 
@@ -142,12 +146,13 @@ namespace wpf_netcore_tcp_server.ViewModel
 
         public HomeViewModel()
         {
-            _networkManager = new NetworkManager();
+            _instance = this;
+            NetworkManager = new NetworkManager();
             Messages = new ObservableCollection<Message>();
             Packets = new ObservableCollection<Packet>();
             Logs = new ObservableCollection<string>();
-            _networkManager.MessageReceived += OnMessageReceived;
-            _networkManager.PacketReceived += OnPacketReceived;
+            NetworkManager.MessageReceived += OnMessageReceived;
+            NetworkManager.PacketReceived += OnPacketReceived;
             PropertyChanged += OnPropertyChanged;
 
             Task.Factory.StartNew(async () =>
@@ -197,7 +202,7 @@ namespace wpf_netcore_tcp_server.ViewModel
         {
             if (IsSendingPeriod)
             {
-                _networkManager?.Module?.Send(TargetId, new Packet() { Description = "packet" });
+                NetworkManager?.Module?.Send(TargetId, new Packet() { Description = "packet" });
             }
         }
 

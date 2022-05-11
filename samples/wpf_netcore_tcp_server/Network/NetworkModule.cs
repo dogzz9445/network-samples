@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using NetCoreServer;
 using Newtonsoft.Json;
+using System.IO;
+using SettingNetwork.Util;
 
 namespace SettingNetwork
 {
@@ -18,23 +20,21 @@ namespace SettingNetwork
         public event EventHandler<Packet> PacketReceived;
         public event EventHandler<NetworkError> ErrorReceived;
 
+        private readonly Dictionary<int, BaseUdpClient> _udpClients = new Dictionary<int, BaseUdpClient>();
+        private readonly Dictionary<int, BaseTcpClient> _tcpClients = new Dictionary<int, BaseTcpClient>();
+        private readonly Dictionary<int, BaseFileTcpClient> _fileTcpClients = new Dictionary<int, BaseFileTcpClient>();
+
         private NetworkSettings _settings;
         private BaseTcpServer _tcpServer;
         private BaseFileTcpServer _fileServer;
         private BaseUdpServer _udpServer;
         private HttpServer _httpServer;
-
-        private Dictionary<int, BaseUdpClient> _udpClients;
-        private Dictionary<int, BaseTcpClient> _tcpClients;
-        private Dictionary<int, BaseFileTcpClient> _fileTcpClients;
+        private HttpClientEx _httpClientEx;
 
         private int _timeoutTcpSend = 30;
 
         public NetworkModule() : base()
         {
-            _udpClients = new Dictionary<int, BaseUdpClient>();
-            _tcpClients = new Dictionary<int, BaseTcpClient>();
-            _fileTcpClients = new Dictionary<int, BaseFileTcpClient>();
             Initialize();
         }
 
@@ -94,6 +94,10 @@ namespace SettingNetwork
                     break;
                 }
             }
+            if (_settings.ContentDelivery.UseContentDelivery == true)
+            {
+                _httpClientEx = new HttpClientEx(_settings.ContentDelivery.Address, _settings.ContentDelivery.Port ?? 8000);
+            }
             if (hostComputerInfo == null)
             {
                 Log("Cannot initialize NetworkManager, there isn't any setting about host computer");
@@ -127,6 +131,13 @@ namespace SettingNetwork
             }
         }
 
+        public void RefreshSessions()
+        {
+            ClearSessions();
+            Initialize();
+        }
+
+        #region TCP UDP 통신
         public void SendTCP(int destinationId, string message)
         {
             if (_settings == null)
@@ -267,6 +278,104 @@ namespace SettingNetwork
             }
             _fileTcpClients[destinationId].SendFile(filename);
         }
+        #endregion
+
+        #region Http 통신
+        public HttpResponse GetRequestAPI(string url)
+        {
+            if (_httpClientEx == null)
+            {
+                return null;
+            }
+            if (_settings.ContentDelivery.UseContentDelivery == false)
+            {
+                return null;
+            }
+            var fullUrl = PathUtil.Combine(_settings.ContentDelivery.ApiRoot, url);
+            var task = _httpClientEx.SendGetRequest(fullUrl);
+                task.Wait();
+            var response = task.Result;
+            if (response.Status >= 300)
+            {
+                return null;
+            }
+            return response;
+        }
+
+        public async Task<HttpResponse> GetRequestAPIAsync(string url)
+        {
+            if (_httpClientEx == null)
+            {
+                Log("Error: UseContentDelivery is false");
+                return null;
+            }
+            if (_settings.ContentDelivery.UseContentDelivery == false)
+            {
+                return null;
+            }
+            var fullUrl = PathUtil.Combine(_settings.ContentDelivery.ApiRoot, url);
+            var response = await _httpClientEx.SendGetRequest(fullUrl);
+            if (response.Status >= 300)
+            {
+                Log("Error: HttpResponse code is over 300");
+                return null;
+            }
+            return response;
+        }
+
+        public HttpResponse GetRequestFile(string url)
+        {
+            if (_httpClientEx == null)
+            {
+                return null;
+            }
+            if (_settings.ContentDelivery.UseContentDelivery == false)
+            {
+                return null;
+            }
+            var fileName = Path.GetFileName(url);
+            var fullUrl = PathUtil.Combine(_settings.ContentDelivery.ContentRoot, url);
+            var task = _httpClientEx.SendGetRequest(fullUrl);
+            task.Wait();
+            var response = task.Result;
+
+            Log($"FileDonwload: {fileName} from {fullUrl}");
+
+            var fullFilePath = Path.GetFullPath(PathUtil.Combine(_settings.ContentDelivery.LocalFileRoot, fileName));
+            using (var fileStream = new FileStream(fullFilePath, FileMode.Create, FileAccess.Write))
+            {
+                fileStream.Write(response.BodyBytes, 0, (int)response.BodyLength);
+            }
+            return response;
+        }
+
+        public async Task<HttpResponse> GetRequestFileAsync(string url)
+        {
+            if (_httpClientEx == null)
+            {
+                return null;
+            }
+            if (_settings.ContentDelivery.UseContentDelivery == false)
+            {
+                return null;
+            }
+            var fileName = Path.GetFileName(url);
+            var fullUrl = PathUtil.Combine(_settings.ContentDelivery.ContentRoot, url);
+            var response = await _httpClientEx.SendGetRequest(fullUrl);
+
+            Log($"FileDonwload: {fileName} from {fullUrl}");
+
+            var fullFilePath = Path.GetFullPath(PathUtil.Combine(_settings.ContentDelivery.LocalFileRoot, fileName));
+            using (var fileStream = new FileStream(fullFilePath, FileMode.Create, FileAccess.Write))
+            {
+                fileStream.Write(response.BodyBytes, 0, (int)response.BodyLength);
+            }
+
+            return response;
+        }
+
+        #endregion
+
 
         private void OnMessageReceived(object sender, Message message)
         {
@@ -283,12 +392,6 @@ namespace SettingNetwork
         private void OnErrorReceived(object sender, NetworkError error)
         {
             ErrorReceived?.Invoke(sender, error);
-        }
-
-        public void RefreshSessions()
-        {
-            ClearSessions();
-            Initialize();
         }
 
         protected void OnNetworkSettingChanged()

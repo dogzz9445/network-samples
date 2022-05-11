@@ -4,16 +4,6 @@ using SettingNetwork.Util;
 
 namespace SettingNetwork
 {
-    public enum E_ICD_PACKET_TYPE
-    {
-        PacketType_DEFAULT,
-        PacketType_COMMAND_CONTROL,
-        PacketType_SCENARIO_INFO,
-        PacketType_STUDENT_DATA,
-        PacketType_HARDWARE_STATUS,
-        PacketType_INSTRUCTOR_MESSAGE
-    }
-
     [Serializable]
     public partial class Packet : BindableBase
     {

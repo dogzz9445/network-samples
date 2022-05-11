@@ -65,6 +65,7 @@
 
 
                     <Button Margin="8"
+                            IsEnabled="False"
                             HorizontalContentAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="GetApp"
@@ -75,6 +76,7 @@
                         </StackPanel>
                     </Button>
                     <Button Margin="8"
+                            IsEnabled="False"
                             HorizontalContentAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="GetApp"
@@ -85,6 +87,7 @@
                         </StackPanel>
                     </Button>
                     <Button Margin="8"
+                            IsEnabled="False"
                             HorizontalContentAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="GetApp"
@@ -95,6 +98,7 @@
                         </StackPanel>
                     </Button>
                     <Button Margin="8"
+                            IsEnabled="False"
                             HorizontalContentAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="GetApp"
@@ -105,6 +109,7 @@
                         </StackPanel>
                     </Button>
                     <Button Margin="8"
+                            IsEnabled="False"
                             HorizontalContentAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="GetApp"
@@ -115,6 +120,7 @@
                         </StackPanel>
                     </Button>
                     <Button Margin="8"
+                            IsEnabled="False"
                             HorizontalContentAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="GetApp"
@@ -125,6 +131,7 @@
                         </StackPanel>
                     </Button>
                     <Button Margin="8"
+                            IsEnabled="False"
                             HorizontalContentAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="GetApp"
@@ -135,6 +142,7 @@
                         </StackPanel>
                     </Button>
                     <Button Margin="8"
+                            IsEnabled="False"
                             HorizontalContentAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="GetApp"

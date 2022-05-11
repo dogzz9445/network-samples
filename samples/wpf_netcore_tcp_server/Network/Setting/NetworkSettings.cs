@@ -7,6 +7,55 @@ using SettingNetwork.Util;
 
 namespace SettingNetwork
 {
+    public class ContentDeliveryServerInfo : BindableBase
+    {
+        #region 속성
+        [JsonProperty("useContentDelivery")]
+        private bool? _useContentDelivery;
+        [JsonProperty("localFileRoot")]
+        private string _localFileRoot;
+        [JsonProperty("address")]
+        private string _address;
+        [JsonProperty("port")]
+        private int? _port;
+        [JsonProperty("apiRoot")]
+        private string _apiRoot;
+        [JsonProperty("contentRoot")]
+        private string _contentRoot;
+
+        [JsonIgnore]
+        public bool? UseContentDelivery { get => _useContentDelivery; set => SetProperty(ref _useContentDelivery, value); }
+        [JsonIgnore]
+        public string LocalFileRoot { get => _localFileRoot; set => SetProperty(ref _localFileRoot, value); }
+        [JsonIgnore]
+        public string Address { get => _address; set => SetProperty(ref _address, value); }
+        [JsonIgnore]
+        public int? Port { get => _port; set => SetProperty(ref _port, value); }
+        [JsonIgnore]
+        public string ApiRoot { get => _apiRoot; set => SetProperty(ref _apiRoot, value); }
+        [JsonIgnore]
+        public string ContentRoot { get => _contentRoot; set => SetProperty(ref _contentRoot, value); }
+        #endregion
+        public ContentDeliveryServerInfo() : this(null) { }
+
+        public ContentDeliveryServerInfo(
+            bool? useContentDelivery = null,
+            string address = null,
+            int? port = null,
+            string apiRoot = null,
+            string contentRoot = null, 
+            string localFileRoot = null)
+        {
+            _useContentDelivery = useContentDelivery ?? false;
+            _localFileRoot = localFileRoot ?? "Media/";
+            _address = address ?? "192.168.0.222";
+            _port = port ?? 8000;
+            _apiRoot = apiRoot ?? "/";
+            _contentRoot = contentRoot ?? "/media/";
+        }
+    }
+
+
     public class ComputerInfo : BindableBase
     {
         #region 속성
@@ -147,6 +196,8 @@ namespace SettingNetwork
         private bool? _isSaveFileAbsolutePath;
         [JsonProperty("fileSavedDirectory")]
         private string _fileSavedDirectory;
+        [JsonProperty("contentDelivery")]
+        private ContentDeliveryServerInfo _contentDelivery;
         [JsonProperty("computerInfos")]
         private ObservableCollection<ComputerInfo> _computerInfos;
 
@@ -154,6 +205,8 @@ namespace SettingNetwork
         public bool? UseDebug { get => _useDebug; set => SetProperty(ref _useDebug, value); }
         [JsonIgnore]
         public int? HostId { get => _hostId; set => SetProperty(ref _hostId, value); }
+        [JsonIgnore]
+        public ContentDeliveryServerInfo ContentDelivery { get => _contentDelivery; set => SetObservableProperty(ref _contentDelivery, value); }
         [JsonIgnore]
         public ObservableCollection<ComputerInfo> ComputerInfos { get => _computerInfos; set => SetCollectionProperty(ref _computerInfos, value); }
         [JsonIgnore]
@@ -165,13 +218,14 @@ namespace SettingNetwork
         #region 생성자
         public NetworkSettings() : this(null) { }
 
-        public NetworkSettings(bool? useDebug = null, int? hostId = null, ObservableCollection<ComputerInfo> computerInfos = null, bool? isSaveFileAbsolutePath = null, string fileSavedDirectory = null)
+        public NetworkSettings(bool? useDebug = null, int? hostId = null, ObservableCollection<ComputerInfo> computerInfos = null, bool? isSaveFileAbsolutePath = null, string fileSavedDirectory = null, ContentDeliveryServerInfo contentDelivery = null)
         {
             UseDebug = useDebug ?? false;
             HostId = hostId ?? 0;
             ComputerInfos = computerInfos ?? new ObservableCollection<ComputerInfo>();
             IsSaveFileAbsolutePath = isSaveFileAbsolutePath ?? false;
             FileSavedDirectory = fileSavedDirectory ?? "./Data";
+            ContentDelivery = contentDelivery ?? new ContentDeliveryServerInfo();
         }
 
         public override bool Equals(object obj)
