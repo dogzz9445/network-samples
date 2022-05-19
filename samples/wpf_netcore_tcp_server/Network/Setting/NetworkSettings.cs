@@ -14,6 +14,8 @@ namespace SettingNetwork
         private bool? _useContentDelivery;
         [JsonProperty("localFileRoot")]
         private string _localFileRoot;
+        [JsonProperty("protocol")]
+        private string _protocol;
         [JsonProperty("address")]
         private string _address;
         [JsonProperty("port")]
@@ -22,11 +24,17 @@ namespace SettingNetwork
         private string _apiRoot;
         [JsonProperty("contentRoot")]
         private string _contentRoot;
+        [JsonProperty("username")]
+        private string _username;
+        [JsonProperty("password")]
+        private string _password;
 
         [JsonIgnore]
         public bool? UseContentDelivery { get => _useContentDelivery; set => SetProperty(ref _useContentDelivery, value); }
         [JsonIgnore]
         public string LocalFileRoot { get => _localFileRoot; set => SetProperty(ref _localFileRoot, value); }
+        [JsonIgnore]
+        public string Protocol { get => _protocol; set => SetProperty(ref _protocol, value); }
         [JsonIgnore]
         public string Address { get => _address; set => SetProperty(ref _address, value); }
         [JsonIgnore]
@@ -35,23 +43,33 @@ namespace SettingNetwork
         public string ApiRoot { get => _apiRoot; set => SetProperty(ref _apiRoot, value); }
         [JsonIgnore]
         public string ContentRoot { get => _contentRoot; set => SetProperty(ref _contentRoot, value); }
+        [JsonIgnore]
+        public string Username { get => _username; set => SetProperty(ref _username, value); }
+        [JsonIgnore]
+        public string Password { get => _password; set => SetProperty(ref _password, value); }
         #endregion
         public ContentDeliveryServerInfo() : this(null) { }
 
         public ContentDeliveryServerInfo(
             bool? useContentDelivery = null,
+            string protocol = null,
             string address = null,
             int? port = null,
             string apiRoot = null,
             string contentRoot = null, 
-            string localFileRoot = null)
+            string localFileRoot = null,
+            string username = null,
+            string password = null)
         {
             _useContentDelivery = useContentDelivery ?? false;
             _localFileRoot = localFileRoot ?? "Media/";
+            _protocol = protocol ?? "http";
             _address = address ?? "192.168.0.222";
             _port = port ?? 8000;
             _apiRoot = apiRoot ?? "/";
             _contentRoot = contentRoot ?? "/media/";
+            _username = username ?? "";
+            _password = password ?? "";
         }
     }
 

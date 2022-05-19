@@ -29,8 +29,8 @@
             </TabItem.Header>
             <Frame Source="/View/HomePage.xaml" />
         </TabItem>
-        <TabItem ToolTip="컴퓨터 설정"
-                 Tag="ComputerSettingPage"
+        <TabItem ToolTip="Api 클라이언트"
+                 Tag="RestClientPage"
                  Style="{StaticResource MaterialDesignNavigationRailTabItem}">
             <TabItem.Header>
                 <materialDesign:PackIcon Kind="MonitorEdit"

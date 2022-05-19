@@ -8,6 +8,8 @@ using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using NetCoreServer;
 using System.IO;
+using FireXR.Protobuf;
+using Newtonsoft.Json;
 
 namespace wpf_netcore_tcp_server.ViewModel
 {
@@ -65,6 +67,24 @@ namespace wpf_netcore_tcp_server.ViewModel
             {
                 var result = await HomeViewModel.Instance.NetworkManager.GetRequestFileAsync(TargetFileURL);
                 AddLog(result.Status.ToString());
+            });
+        }
+
+        private DelegateCommand _sendPostRequestFileTest1;
+        public DelegateCommand SendPostRequestFileTest1
+        {
+            get => _sendPostRequestFileTest1 ??= new DelegateCommand(async () =>
+            {
+                Transform transform = new Transform();
+                transform.ID = 2323;
+                transform.Type = TransformType.Position;
+                transform.Name = "asdasd";
+                transform.Desc = "asdasdasd";
+                var result = await HomeViewModel.Instance.NetworkManager.PostRequestAPIAsync("/unit/transform/", JsonConvert.SerializeObject(transform));
+                if (result != null)
+                { 
+                   AddLog(result.ToString());
+                }
             });
         }
         #endregion

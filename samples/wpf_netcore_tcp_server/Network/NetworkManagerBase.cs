@@ -87,5 +87,10 @@ namespace SettingNetwork
         {
             return await Module.GetRequestFileAsync(url);
         }
+
+        public async Task<HttpResponse> PostRequestAPIAsync(string url, string content)
+        {
+            return await Module.PutRequestAPIAsync(url, content);
+        }
     }
 }

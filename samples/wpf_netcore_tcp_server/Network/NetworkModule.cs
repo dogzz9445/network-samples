@@ -11,6 +11,9 @@ using NetCoreServer;
 using Newtonsoft.Json;
 using System.IO;
 using SettingNetwork.Util;
+using Newtonsoft.Json.Linq;
+using FireXR.Protobuf;
+using System.Configuration;
 
 namespace SettingNetwork
 {
@@ -30,6 +33,46 @@ namespace SettingNetwork
         private BaseUdpServer _udpServer;
         private HttpServer _httpServer;
         private HttpClientEx _httpClientEx;
+
+        private string _apiURL;
+        public string APIURL
+        { 
+            get
+            {
+                if (_settings == null)
+                {
+                    return null;
+                }
+                return _apiURL ??= PathUtil.Combine($"{_settings.ContentDelivery.Protocol}://{_settings.ContentDelivery.Address}:{_settings.ContentDelivery.Port}", _settings.ContentDelivery.ApiRoot);
+            }
+        }
+
+        private string _contentURL;
+        public string ContentURL
+        {
+            get
+            {
+                if (_settings == null)
+                {
+                    return null;
+                }
+                return _contentURL ??= PathUtil.Combine($"{_settings.ContentDelivery.Protocol}://{_settings.ContentDelivery.Address}:{_settings.ContentDelivery.Port}", _settings.ContentDelivery.ContentRoot);
+            }
+        }
+
+        private string _svcCredentials;
+        public string SvcCredentials
+        {
+            get
+            {
+
+                if (_settings == null)
+                {
+                    return null;
+                }
+                return _svcCredentials ??= Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes($"{_settings.ContentDelivery.Username}:{_settings.ContentDelivery.Password}"));
+            }
+        }
 
         private int _timeoutTcpSend = 30;
 
@@ -84,6 +127,10 @@ namespace SettingNetwork
         public void Initialize()
         {
             _settings = NetworkSettingsController.Global.Context;
+            if (_settings == null)
+            {
+                throw new ArgumentException("settings cannot be null");
+            }
             int hostId = _settings.HostId ?? 0;
             ComputerInfo hostComputerInfo = null;
             foreach (var setting in _settings.ComputerInfos)
@@ -96,7 +143,7 @@ namespace SettingNetwork
             }
             if (_settings.ContentDelivery.UseContentDelivery == true)
             {
-                _httpClientEx = new HttpClientEx(_settings.ContentDelivery.Address, _settings.ContentDelivery.Port ?? 8000);
+                _httpClientEx = new HttpClientEx(_settings.ContentDelivery.Address, _settings.ContentDelivery.Port ?? 8000); 
             }
             if (hostComputerInfo == null)
             {
@@ -129,6 +176,10 @@ namespace SettingNetwork
                 _fileServer.Start();
                 Log("File Server Started...");
             }
+
+            _apiURL = PathUtil.Combine($"{_settings.ContentDelivery.Protocol}://{_settings.ContentDelivery.Address}:{_settings.ContentDelivery.Port}", _settings.ContentDelivery.ApiRoot);
+            _contentURL ??= PathUtil.Combine($"{_settings.ContentDelivery.Protocol}://{_settings.ContentDelivery.Address}:{_settings.ContentDelivery.Port}", _settings.ContentDelivery.ContentRoot);
+            _svcCredentials ??= Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes($"{_settings.ContentDelivery.Username}:{_settings.ContentDelivery.Password}"));
         }
 
         public void RefreshSessions()
@@ -372,6 +423,94 @@ namespace SettingNetwork
             }
 
             return response;
+        }
+
+        public async Task<HttpResponse> PostRequestAPIAsync(string url, string content)
+        {
+            if (_httpClientEx == null)
+            {
+                Log("Error: UseContentDelivery is false");
+                return null;
+            }
+            if (_settings.ContentDelivery.UseContentDelivery == false)
+            {
+                return null;
+            }
+            var fullUrl = PathUtil.Combine(_settings.ContentDelivery.ApiRoot, url);
+            var response = await _httpClientEx.SendPostRequest(fullUrl, content);
+            return response;
+        }
+
+        //private string _authToken;
+        //public string AuthToken 
+        //{
+        //    get
+        //    {
+        //        if (_authToken == null)
+        //        {
+        //            User test = new User() { username="test", password="test" };
+        //            string json = JsonConvert.SerializeObject(test);
+        //            var fullUrl = PathUtil.Combine(_settings.ContentDelivery.ApiRoot, "/api-token-auth/");
+        //            HttpRequest request = new HttpRequest();
+        //            request.MakePostRequest(fullUrl, json, contentType: "application/json; charset=UTF-8");
+        //            var task = _httpClientEx.SendRequest(request);
+        //            //var task = _httpClientEx.SendGetRequest(fullUrl);
+        //            task.Wait();
+        //            var response = task.Result;
+        //            if (response.Status == 200)
+        //            {
+        //                var jobject = JObject.Parse(response.Body);
+        //                _authToken = jobject["token"].ToString();
+        //            }
+        //            //Task.Factory.StartNew(async () =>
+        //            //{
+        //            //    await File.WriteAllTextAsync("log.txt", response.ToString());
+        //            //});
+        //        }
+        //        return _authToken;
+        //    }
+        //}
+
+
+        public async Task<HttpResponse> PutRequestAPIAsync(string url, string content)
+        {
+            if (_httpClientEx == null)
+            {
+                Log("Error: UseContentDelivery is false");
+                return null;
+            }
+            if (_settings.ContentDelivery.UseContentDelivery == false)
+            {
+                return null;
+            }
+            var fullUrl = PathUtil.Combine(APIURL, url);
+            //HttpRequest request = new HttpRequest();
+            //request = request.MakePostRequest(fullUrl, content, contentType: "application/json; charset=UTF-8");
+
+            //request = request.SetHeader("Accept", "*/*");
+            //request = request.SetHeader("Accept-Encoding", "gzip, deflate, br");
+            //request = request.SetHeader("Connection", "keep-alive");
+            //request = request.SetHeader("Authorization", "Basic " + svcCredentials);
+            //Console.WriteLine(svcCredentials);
+            ////request = request.SetHeader("Authorization", "Token " + AuthToken); 
+            HttpWebRequest httpWepRequest = (HttpWebRequest)HttpWebRequest.Create(fullUrl);
+            httpWepRequest.KeepAlive = true;
+            httpWepRequest.Method = "Post";
+            httpWepRequest.ContentType = "application/json; charset=UTF-8";
+            httpWepRequest.Headers.Add("Authorization", "Basic " + SvcCredentials);
+            var data = Encoding.UTF8.GetBytes(content);
+            httpWepRequest.ContentLength = data.Length;
+            var reqStream = httpWepRequest.GetRequestStream();
+            reqStream.Write(data, 0, data.Length);
+            reqStream.Close();
+            WebResponse response = null;
+            response = httpWepRequest.GetResponse();
+            var reader = new StreamReader(response.GetResponseStream());
+            var str = reader.ReadToEnd();
+
+            await File.WriteAllTextAsync("log.txt", str.ToString());
+            //var response = await _httpClientEx.SendRequest(request);
+            return null;
         }
 
         #endregion
