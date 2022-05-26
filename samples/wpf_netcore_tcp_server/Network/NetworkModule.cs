@@ -332,47 +332,26 @@ namespace SettingNetwork
         #endregion
 
         #region Http 통신
-        public HttpResponse GetRequestAPI(string url)
-        {
-            if (_httpClientEx == null)
-            {
-                return null;
-            }
-            if (_settings.ContentDelivery.UseContentDelivery == false)
-            {
-                return null;
-            }
-            var fullUrl = PathUtil.Combine(_settings.ContentDelivery.ApiRoot, url);
-            var task = _httpClientEx.SendGetRequest(fullUrl);
-                task.Wait();
-            var response = task.Result;
-            if (response.Status >= 300)
-            {
-                return null;
-            }
-            return response;
-        }
-
-        public async Task<HttpResponse> GetRequestAPIAsync(string url)
-        {
-            if (_httpClientEx == null)
-            {
-                Log("Error: UseContentDelivery is false");
-                return null;
-            }
-            if (_settings.ContentDelivery.UseContentDelivery == false)
-            {
-                return null;
-            }
-            var fullUrl = PathUtil.Combine(_settings.ContentDelivery.ApiRoot, url);
-            var response = await _httpClientEx.SendGetRequest(fullUrl);
-            if (response.Status >= 300)
-            {
-                Log("Error: HttpResponse code is over 300");
-                return null;
-            }
-            return response;
-        }
+        //public HttpResponse GetRequestAPI(string url)
+        //{
+        //    if (_httpClientEx == null)
+        //    {
+        //        return null;
+        //    }
+        //    if (_settings.ContentDelivery.UseContentDelivery == false)
+        //    {
+        //        return null;
+        //    }
+        //    var fullUrl = PathUtil.Combine(_settings.ContentDelivery.ApiRoot, url);
+        //    var task = _httpClientEx.SendGetRequest(fullUrl);
+        //        task.Wait();
+        //    var response = task.Result;
+        //    if (response.Status >= 300)
+        //    {
+        //        return null;
+        //    }
+        //    return response;
+        //}
 
         public HttpResponse GetRequestFile(string url)
         {
@@ -425,21 +404,48 @@ namespace SettingNetwork
             return response;
         }
 
-        public async Task<HttpResponse> PostRequestAPIAsync(string url, string content)
+        // TODO:
+        public async Task<HttpResponse> PostRequestFileAsync(string url, string filename)
         {
+
             if (_httpClientEx == null)
             {
-                Log("Error: UseContentDelivery is false");
                 return null;
             }
             if (_settings.ContentDelivery.UseContentDelivery == false)
             {
                 return null;
             }
-            var fullUrl = PathUtil.Combine(_settings.ContentDelivery.ApiRoot, url);
-            var response = await _httpClientEx.SendPostRequest(fullUrl, content);
+            var fileName = Path.GetFileName(url);
+            var fullUrl = PathUtil.Combine(_settings.ContentDelivery.ContentRoot, url);
+            var response = await _httpClientEx.SendGetRequest(fullUrl);
+
+            Log($"FileDonwload: {fileName} from {fullUrl}");
+
+            var fullFilePath = Path.GetFullPath(PathUtil.Combine(_settings.ContentDelivery.LocalFileRoot, fileName));
+            using (var fileStream = new FileStream(fullFilePath, FileMode.Create, FileAccess.Write))
+            {
+                fileStream.Write(response.BodyBytes, 0, (int)response.BodyLength);
+            }
+
             return response;
         }
+
+        //public async Task<HttpResponse> PostRequestAPIAsync(string url, string content)
+        //{
+        //    if (_httpClientEx == null)
+        //    {
+        //        Log("Error: UseContentDelivery is false");
+        //        return null;
+        //    }
+        //    if (_settings.ContentDelivery.UseContentDelivery == false)
+        //    {
+        //        return null;
+        //    }
+        //    var fullUrl = PathUtil.Combine(_settings.ContentDelivery.ApiRoot, url);
+        //    var response = await _httpClientEx.SendPostRequest(fullUrl, content);
+        //    return response;
+        //}
 
         //private string _authToken;
         //public string AuthToken 
@@ -472,47 +478,84 @@ namespace SettingNetwork
         //}
 
 
-        public async Task<HttpResponse> PutRequestAPIAsync(string url, string content)
+        //public async Task<HttpResponse> GetRequestAPIAsync(string url)
+        //{
+        //    if (_httpClientEx == null)
+        //    {
+        //        Log("Error: UseContentDelivery is false");
+        //        return null;
+        //    }
+        //    if (_settings.ContentDelivery.UseContentDelivery == false)
+        //    {
+        //        return null;
+        //    }
+        //    var fullUrl = PathUtil.Combine(_settings.ContentDelivery.ApiRoot, url);
+        //    var response = await _httpClientEx.SendGetRequest(fullUrl);
+        //    if (response.Status >= 300)
+        //    {
+        //        Log("Error: HttpResponse code is over 300");
+        //        return null;
+        //    }
+        //    return response;
+        //}
+
+        public async Task<string> RequestAPIAsync(string url, string content, string method = "Get")
         {
-            if (_httpClientEx == null)
-            {
-                Log("Error: UseContentDelivery is false");
-                return null;
-            }
             if (_settings.ContentDelivery.UseContentDelivery == false)
             {
                 return null;
             }
+
             var fullUrl = PathUtil.Combine(APIURL, url);
-            //HttpRequest request = new HttpRequest();
-            //request = request.MakePostRequest(fullUrl, content, contentType: "application/json; charset=UTF-8");
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(fullUrl);
+            request.KeepAlive = false;
+            request.ContentType = "application/json; charset=UTF-8";
+            request.Headers.Add("Authorization", "Basic " + SvcCredentials);
+            request.Headers.Add("Accept", "*/*");
+            request.Method = method;
+            if (content != null)
+            {
+                var reqBody = Encoding.UTF8.GetBytes(content);
+                request.ContentLength = reqBody.Length;
+                var reqStream = request.GetRequestStream();
+                await reqStream.WriteAsync(reqBody, 0, reqBody.Length);
+                reqStream.Close();
+            }
 
-            //request = request.SetHeader("Accept", "*/*");
-            //request = request.SetHeader("Accept-Encoding", "gzip, deflate, br");
-            //request = request.SetHeader("Connection", "keep-alive");
-            //request = request.SetHeader("Authorization", "Basic " + svcCredentials);
-            //Console.WriteLine(svcCredentials);
-            ////request = request.SetHeader("Authorization", "Token " + AuthToken); 
-            HttpWebRequest httpWepRequest = (HttpWebRequest)HttpWebRequest.Create(fullUrl);
-            httpWepRequest.KeepAlive = true;
-            httpWepRequest.Method = "Post";
-            httpWepRequest.ContentType = "application/json; charset=UTF-8";
-            httpWepRequest.Headers.Add("Authorization", "Basic " + SvcCredentials);
-            var data = Encoding.UTF8.GetBytes(content);
-            httpWepRequest.ContentLength = data.Length;
-            var reqStream = httpWepRequest.GetRequestStream();
-            reqStream.Write(data, 0, data.Length);
-            reqStream.Close();
-            WebResponse response = null;
-            response = httpWepRequest.GetResponse();
-            var reader = new StreamReader(response.GetResponseStream());
-            var str = reader.ReadToEnd();
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                return null;
+            }
+            var result = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
-            await File.WriteAllTextAsync("log.txt", str.ToString());
-            //var response = await _httpClientEx.SendRequest(request);
-            return null;
+            return result;
         }
 
+        public async Task<string> GetRequestAPIAsync(string url)
+        {
+            return await RequestAPIAsync(url, null, "GET");
+        }
+
+        public async Task<string> PostRequestAPIAsync(string url, string content)
+        {
+            return await RequestAPIAsync(url, content, "POST");
+        }
+
+        public async Task<string> PutRequestAPIAsync(string url, string content)
+        {
+            return await RequestAPIAsync(url, content, "PUT");
+        }
+
+        public async Task<string> PatchRequestAPIAsync(string url, string content)
+        {
+            return await RequestAPIAsync(url, content, "PATCH");
+        }
+
+        public async Task<string> DeleteRequestAPIAsync(string url)
+        {
+            return await RequestAPIAsync(url, null, "DELETE");
+        }
         #endregion
 
 

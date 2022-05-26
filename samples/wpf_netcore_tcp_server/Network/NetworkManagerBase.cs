@@ -23,10 +23,11 @@ namespace SettingNetwork
 
         public NetworkManagerBase()
         {
-            Module = new NetworkModule();
+            _module = new NetworkModule();
 
             Module.MessageReceived += OnMessageReceived;
             Module.PacketReceived += OnPacketReceived;
+            Module.ErrorReceived += OnErrorReceived;
         }
 
         public void Dispose()
@@ -35,6 +36,7 @@ namespace SettingNetwork
             {
                 Module.MessageReceived -= OnMessageReceived;
                 Module.PacketReceived -= OnPacketReceived;
+                Module.ErrorReceived -= OnErrorReceived;
             }
         }
 
@@ -46,6 +48,10 @@ namespace SettingNetwork
         public void OnPacketReceived(object sender, Packet packet)
         {
             PacketReceived?.Invoke(sender, packet);
+        }
+        public void OnErrorReceived(object sender, NetworkError error)
+        {
+            ErrorReceived?.Invoke(sender, error);
         }
 
         public void Send(int destinationId, string data, ProtocolType protocolType = ProtocolType.Tcp)
@@ -68,29 +74,40 @@ namespace SettingNetwork
             Module.SendFile(destinationId, filename);
         }
 
-        public HttpResponse GetRequestAPI(string url)
-        {
-            return Module.GetRequestAPI(url);
-        }
-
-        public async Task<HttpResponse> GetRequestAPIAsync(string url)
-        {
-            return await Module.GetRequestAPIAsync(url);
-        }
-
-        public void GetRequestFile(string url)
-        {
-            Module.GetRequestFile(url);
-        }
-
         public async Task<HttpResponse> GetRequestFileAsync(string url)
         {
             return await Module.GetRequestFileAsync(url);
         }
 
-        public async Task<HttpResponse> PostRequestAPIAsync(string url, string content)
+        public async Task<HttpResponse> PostRequestFileAsync(string url, string filename)
+        {
+            return await Module.PostRequestFileAsync(url, filename);
+        }
+
+        public async Task<string> GetRequestAPIAsync(string url)
+        {
+            return await Module.GetRequestAPIAsync(url);
+        }
+
+        public async Task<string> PostRequestAPIAsync(string url, string content)
+        {
+            return await Module.PostRequestAPIAsync(url, content);
+        }
+
+        public async Task<string> PutRequestAPIAsync(string url, string content)
         {
             return await Module.PutRequestAPIAsync(url, content);
         }
+
+        public async Task<string> PatchRequestAPIAsync(string url, string content)
+        {
+            return await Module.PatchRequestAPIAsync(url, content);
+        }
+
+        public async Task<string> DeleteRequestAPIAsync(string url, string content)
+        {
+            return await Module.DeleteRequestAPIAsync(url);
+        }
+
     }
 }

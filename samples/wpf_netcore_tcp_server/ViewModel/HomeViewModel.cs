@@ -13,6 +13,7 @@ using System.Collections.Concurrent;
 using Microsoft.Win32;
 using System.IO;
 using System.ComponentModel;
+using FireXR;
 
 namespace wpf_netcore_tcp_server.ViewModel
 {

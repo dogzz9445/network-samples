@@ -86,8 +86,8 @@
                         </StackPanel>
                     </Button>
                     <Button Margin="8"
-                            IsEnabled="False"
-                            HorizontalContentAlignment="Stretch">
+                            HorizontalContentAlignment="Stretch"
+                            Command="{Binding SendGetRequestTest3}">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="GetApp"
                                                      Width="32"
@@ -97,7 +97,7 @@
                         </StackPanel>
                     </Button>
                     <Button Margin="8"
-                            IsEnabled="False"
+                            Command="{Binding SendGetRequestTest4}"
                             HorizontalContentAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="GetApp"
@@ -174,6 +174,30 @@
                                Style="{StaticResource MaterialDesignHeadline4TextBlock}"
                                FontWeight="Bold"
                                Text="API 테스트" />
+
+
+                    <Button Margin="8"
+                            Command="{Binding SendGetRequestUpload}"
+                            HorizontalContentAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="GetApp"
+                                                     Width="32"
+                                                     Height="32" />
+                            <TextBlock Text="Upload"
+                                       Style="{StaticResource MaterialDesignButtonTextBlock}" />
+                        </StackPanel>
+                    </Button>
+                    <Button Margin="8"
+                            Command="{Binding SendGetRequestDownload}"
+                            HorizontalContentAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="GetApp"
+                                                     Width="32"
+                                                     Height="32" />
+                            <TextBlock Text="Download"
+                                       Style="{StaticResource MaterialDesignButtonTextBlock}" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </materialDesign:Card>
         </Border>

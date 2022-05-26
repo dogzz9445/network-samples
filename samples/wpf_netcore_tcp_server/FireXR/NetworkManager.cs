@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using NetCoreServer;
 using Newtonsoft.Json;
+using SettingNetwork;
 
-namespace SettingNetwork
+namespace FireXR
 {
     public class NetworkManager : NetworkManagerBase
     {

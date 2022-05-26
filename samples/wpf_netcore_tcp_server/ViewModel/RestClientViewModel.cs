@@ -10,6 +10,7 @@ using NetCoreServer;
 using System.IO;
 using FireXR.Protobuf;
 using Newtonsoft.Json;
+using FireXR;
 
 namespace wpf_netcore_tcp_server.ViewModel
 {
@@ -25,10 +26,14 @@ namespace wpf_netcore_tcp_server.ViewModel
         private string _targetFileURL = "/test.json";
         public string TargetFileURL { get => _targetFileURL; set => SetProperty(ref _targetFileURL, value); }
 
+        private ScenarioDB _db;
+
+
         #endregion
 
         public RestClientViewModel()
         {
+            _db = new ScenarioDB(HomeViewModel.Instance.NetworkManager);
         }
 
 
@@ -46,7 +51,7 @@ namespace wpf_netcore_tcp_server.ViewModel
             get => _sendGetRequestTest1 ??= new DelegateCommand(async () =>
             {
                 var result = await HomeViewModel.Instance.NetworkManager.GetRequestAPIAsync(TargetURL);
-                AddLog(result.Body);
+                AddLog(result);
             });
         }
 
@@ -56,7 +61,51 @@ namespace wpf_netcore_tcp_server.ViewModel
             get => _sendGetRequestTest2 ??= new DelegateCommand(async () =>
             {
                 var result = await HomeViewModel.Instance.NetworkManager.GetRequestAPIAsync(@"/schedules/");
-                AddLog(result.Body);
+                AddLog(result);
+            });
+        }
+
+        private DelegateCommand _sendGetRequestTest3;
+        public DelegateCommand SendGetRequestTest3
+        {
+            get => _sendGetRequestTest3 ??= new DelegateCommand(() =>
+            {
+                _db.PullTransforms();
+                if (_db.Transforms.Count == 0)
+                {
+                    return;
+                }
+                var transform = _db.Transforms.FirstOrDefault();
+                AddLog(transform.Value.Name);
+            });
+        }
+
+        private DelegateCommand _sendGetRequestTest4;
+        public DelegateCommand SendGetRequestTest4
+        {
+            get => _sendGetRequestTest4 ??= new DelegateCommand(() =>
+            {
+                _db.PullAll();
+            });
+        }
+
+
+        private DelegateCommand _sendGetRequestUpload;
+        public DelegateCommand SendGetRequestUpload
+        {
+            get => _sendGetRequestUpload ??= new DelegateCommand(() =>
+            {
+                _db.UploadAll();
+            });
+        }
+
+
+        private DelegateCommand _sendGetRequestDownload;
+        public DelegateCommand SendGetRequestDownload
+        {
+            get => _sendGetRequestDownload ??= new DelegateCommand(() =>
+            {
+                _db.DownloadAll();
             });
         }
 
