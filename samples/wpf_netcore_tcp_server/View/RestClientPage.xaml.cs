@@ -23,6 +23,8 @@ namespace wpf_netcore_tcp_server.View
     {
         public RestClientViewModel ViewModel;
 
+        public readonly List<Button> Buttons = new List<Button>();
+
         public RestClientPage()
         {
             InitializeComponent();

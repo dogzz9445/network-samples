@@ -39,5 +39,15 @@
             </TabItem.Header>
             <Frame Source="/View/RestClientPage.xaml" />
         </TabItem>
+        <TabItem ToolTip="Api 클라이언트"
+                 Tag="VisualTreePage"
+                 Style="{StaticResource MaterialDesignNavigationRailTabItem}">
+            <TabItem.Header>
+                <materialDesign:PackIcon Kind="MonitorEdit"
+                                         Width="32"
+                                         Height="32" />
+            </TabItem.Header>
+            <Frame Source="/View/VisualTreePage.xaml" />
+        </TabItem>
     </TabControl>
 </Window>

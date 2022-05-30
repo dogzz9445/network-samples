@@ -210,62 +210,62 @@ namespace FireXR
         #region Save Data
         public void SaveTransforms()
         {
-            JsonUtil.WriteFile(_localDataPath + _transformFileName, Transforms);
+            JsonUtil.WriteFile(_localDataPath + _transformFileName, Transforms.Values);
         }
 
         public void SaveInteractionPoints()
         {
-            JsonUtil.WriteFile(_localDataPath + _interactionPointFileName, InteractionPoints);
+            JsonUtil.WriteFile(_localDataPath + _interactionPointFileName, InteractionPoints.Values);
         }
 
         public void SaveCutScenes()
         {
-            JsonUtil.WriteFile(_localDataPath + _cutsceneFileName, CutScenes);
+            JsonUtil.WriteFile(_localDataPath + _cutsceneFileName, CutScenes.Values);
         }
 
         public void SaveObjectInfos()
         {
-            JsonUtil.WriteFile(_localDataPath + _objectInfoFileName, ObjectInfos);
+            JsonUtil.WriteFile(_localDataPath + _objectInfoFileName, ObjectInfos.Values);
         }
 
         public void SaveSounds()
         {
-            JsonUtil.WriteFile(_localDataPath + _soundFileName, Sounds);
+            JsonUtil.WriteFile(_localDataPath + _soundFileName, Sounds.Values);
         }
 
         public void SaveFDSFiles()
         {
-            JsonUtil.WriteFile(_localDataPath + _fdsFileFileName, FDSFiles);
+            JsonUtil.WriteFile(_localDataPath + _fdsFileFileName, FDSFiles.Values);
         }
 
         public void SaveFDSs()
         {
-            JsonUtil.WriteFile(_localDataPath + _fdsFileName, FDSs);
+            JsonUtil.WriteFile(_localDataPath + _fdsFileName, FDSs.Values);
         }
 
         public void SaveXREvents()
         {
-            JsonUtil.WriteFile(_localDataPath + _xrEventFileName, XREvents);
+            JsonUtil.WriteFile(_localDataPath + _xrEventFileName, XREvents.Values);
         }
 
         public void SaveEvaluationActions()
         {
-            JsonUtil.WriteFile(_localDataPath + _evaluationActionFileName, EvaluationActions);
+            JsonUtil.WriteFile(_localDataPath + _evaluationActionFileName, EvaluationActions.Values);
         }
 
         public void SaveEvaluations()
         {
-            JsonUtil.WriteFile(_localDataPath + _evaluationFileName, Evaluations);
+            JsonUtil.WriteFile(_localDataPath + _evaluationFileName, Evaluations.Values);
         }
 
         public void SaveSeparatedScenarios()
         {
-            JsonUtil.WriteFile(_localDataPath + _separatedScenarioFileName, SeparatedScenarios);
+            JsonUtil.WriteFile(_localDataPath + _separatedScenarioFileName, SeparatedScenarios.Values);
         }
 
         public void SaveCombinedScenarios()
         {
-            JsonUtil.WriteFile(_localDataPath + _combinedScenarioFileName, CombinedScenarios);
+            JsonUtil.WriteFile(_localDataPath + _combinedScenarioFileName, CombinedScenarios.Values);
         }
         #endregion 
 
@@ -373,98 +373,62 @@ namespace FireXR
         #region Push Data
         public async Task PushTransforms()
         {
-            foreach (var transform in Transforms)
-            {
-                await _networkManager.PatchRequestAPIAsync($"/unit/transform/{transform.Key}/", JsonConvert.SerializeObject(transform.Value));
-            }
+            await _networkManager.PostRequestAPIAsync($"/unit/transform/", JsonConvert.SerializeObject(Transforms.Values));
         }
 
         public async Task PushInteractionPoints()
         {
-            foreach (var interactionPoint in InteractionPoints)
-            {
-                await _networkManager.PatchRequestAPIAsync($"/unit/interactionpoint/{interactionPoint.Key}/", JsonConvert.SerializeObject(interactionPoint.Value));
-            }
+            await _networkManager.PostRequestAPIAsync($"/unit/interactionpoint/", JsonConvert.SerializeObject(InteractionPoints.Values));
         }
 
         public async Task PushCutScenes()
         {
-            foreach (var cutscene in CutScenes)
-            {
-                await _networkManager.PatchRequestAPIAsync($"/unit/cutscene/{cutscene.Key}/", JsonConvert.SerializeObject(cutscene.Value));
-            }
+            await _networkManager.PostRequestAPIAsync($"/unit/cutscene/", JsonConvert.SerializeObject(CutScenes.Values));
         }
 
         public async Task PushObjectInfos()
         {
-            foreach (var objectInfo in ObjectInfos)
-            {
-                await _networkManager.PatchRequestAPIAsync($"/unit/objectinfo/{objectInfo.Key}/", JsonConvert.SerializeObject(objectInfo.Value));
-            }
+            await _networkManager.PostRequestAPIAsync($"/unit/objectinfo/", JsonConvert.SerializeObject(ObjectInfos.Values));
         }
 
         public async Task PushSounds()
         {
-            foreach (var sound in Sounds)
-            {
-                await _networkManager.PatchRequestAPIAsync($"/unit/sound/{sound.Key}/", JsonConvert.SerializeObject(sound.Value));
-            }
+            await _networkManager.PostRequestAPIAsync($"/unit/sound/", JsonConvert.SerializeObject(Sounds.Values));
         }
 
         public async Task PushFDSFiles()
         {
-            foreach (var fdsFile in FDSFiles)
-            {
-                await _networkManager.PatchRequestAPIAsync($"/unit/fdsfile/{fdsFile.Key}/", JsonConvert.SerializeObject(fdsFile.Value));
-            }
+            await _networkManager.PostRequestAPIAsync($"/unit/fdsfile/", JsonConvert.SerializeObject(FDSFiles.Values));
         }
 
         public async Task PushFDSs()
         {
-            foreach (var fds in FDSs)
-            {
-                await _networkManager.PatchRequestAPIAsync($"/unit/fds/{fds.Key}/", JsonConvert.SerializeObject(fds.Value));
-            }
+            await _networkManager.PostRequestAPIAsync($"/unit/fds/", JsonConvert.SerializeObject(FDSs.Values));
         }
 
         public async Task PushXREvents()
         {
-            foreach (var xrEvent in XREvents)
-            {
-                await _networkManager.PatchRequestAPIAsync($"/unit/xrevent/{xrEvent.Key}/", JsonConvert.SerializeObject(xrEvent.Value));
-            }
+            await _networkManager.PostRequestAPIAsync($"/unit/xrevent/", JsonConvert.SerializeObject(XREvents.Values));
         }
 
         public async Task PushEvaluationActions()
         {
-            foreach (var evaluationAction in EvaluationActions)
-            {
-                await _networkManager.PatchRequestAPIAsync($"/unit/evaluationaction/{evaluationAction.Key}/", JsonConvert.SerializeObject(evaluationAction.Value));
-            }
+            await _networkManager.PostRequestAPIAsync($"/unit/evaluationaction/", JsonConvert.SerializeObject(EvaluationActions.Values));
         }
 
         public async Task PushEvaluations()
         {
-            foreach (var evaluation in Evaluations)
-            {
-                await _networkManager.PatchRequestAPIAsync($"/unit/evaluation/{evaluation.Key}/", JsonConvert.SerializeObject(evaluation.Value));
-            }
+            await _networkManager.PostRequestAPIAsync($"/unit/evaluation/", JsonConvert.SerializeObject(Evaluations.Values));
         }
 
         public async Task PushSeparatedScenarios()
         {
-            foreach (var separatedScenario in SeparatedScenarios)
-            {
-                await _networkManager.PatchRequestAPIAsync($"/unit/separatedscenario/{separatedScenario.Key}/", JsonConvert.SerializeObject(separatedScenario.Value));
-            }
+            await _networkManager.PostRequestAPIAsync($"/unit/separatedscenario/", JsonConvert.SerializeObject(SeparatedScenarios.Values));
         }
 
         public async Task PushCombinedScenarios()
         {
-            foreach (var combinedScenario in CombinedScenarios)
-            {
-                await _networkManager.PatchRequestAPIAsync($"/unit/combinedscenario/{combinedScenario.Key}/", JsonConvert.SerializeObject(combinedScenario.Value));
-            }
+            await _networkManager.PostRequestAPIAsync($"/unit/combinedscenario/", JsonConvert.SerializeObject(CombinedScenarios.Values));
         }
         #endregion
 

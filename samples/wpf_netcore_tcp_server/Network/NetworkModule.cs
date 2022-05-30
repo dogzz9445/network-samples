@@ -506,28 +506,37 @@ namespace SettingNetwork
                 return null;
             }
 
-            var fullUrl = PathUtil.Combine(APIURL, url);
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(fullUrl);
-            request.KeepAlive = false;
-            request.ContentType = "application/json; charset=UTF-8";
-            request.Headers.Add("Authorization", "Basic " + SvcCredentials);
-            request.Headers.Add("Accept", "*/*");
-            request.Method = method;
-            if (content != null)
+            string result = null;
+            try
             {
-                var reqBody = Encoding.UTF8.GetBytes(content);
-                request.ContentLength = reqBody.Length;
-                var reqStream = request.GetRequestStream();
-                await reqStream.WriteAsync(reqBody, 0, reqBody.Length);
-                reqStream.Close();
-            }
+                var fullUrl = PathUtil.Combine(APIURL, url);
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(fullUrl);
+                request.KeepAlive = false;
+                request.ContentType = "application/json; charset=UTF-8";
+                request.Headers.Add("Authorization", "Basic " + SvcCredentials);
+                request.Headers.Add("Accept", "*/*");
+                request.Method = method;
+                if (content != null)
+                {
+                    var reqBody = Encoding.UTF8.GetBytes(content);
+                    request.ContentLength = reqBody.Length;
+                    var reqStream = request.GetRequestStream();
+                    await reqStream.WriteAsync(reqBody, 0, reqBody.Length);
+                    reqStream.Close();
+                }
 
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                return null;
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    return null;
+                }
+                result = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
             }
-            var result = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            catch (WebException exception)
+            {
+
+            }
 
             return result;
         }

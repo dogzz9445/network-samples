@@ -36,18 +36,19 @@ namespace FireXR.Util
             }
             using (var file = File.CreateText(fullFileName))
             {
-                using (var writer = new JsonTextWriter(file))
-                {
-                    string json = JsonConvert.SerializeObject(jsonObject, Formatting.Indented,
-                        new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-                    await writer.WriteRawAsync(json);
-                }
+                string json = JsonConvert.SerializeObject(jsonObject, Formatting.Indented,
+                    new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore,
+                        DefaultValueHandling = DefaultValueHandling.Populate,
+                    });
+
+                file.Write(json);
             }
         }
 
         public static void WriteFile<T>(string fullFileName, T jsonObject)
         {
-            WriteFileAsync(fullFileName, jsonObject).Wait();
+            var task = WriteFileAsync(fullFileName, jsonObject);
+            task.Wait();
         }
     }
 }

@@ -62,6 +62,7 @@
                                Text="샘플 테스트" />
 
                     <Button Margin="8"
+                            Name="Button1"
                             Command="{Binding SendGetRequestTest2}"
                             HorizontalContentAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
@@ -75,6 +76,7 @@
 
 
                     <Button Margin="8"
+                            Name="Button2"
                             HorizontalContentAlignment="Stretch"
                             Command="{Binding SendPostRequestFileTest1}">
                         <StackPanel Orientation="Horizontal">
@@ -86,6 +88,7 @@
                         </StackPanel>
                     </Button>
                     <Button Margin="8"
+                            Name="Button3"
                             HorizontalContentAlignment="Stretch"
                             Command="{Binding SendGetRequestTest3}">
                         <StackPanel Orientation="Horizontal">
@@ -97,6 +100,7 @@
                         </StackPanel>
                     </Button>
                     <Button Margin="8"
+                            Name="Button4"
                             Command="{Binding SendGetRequestTest4}"
                             HorizontalContentAlignment="Stretch">
                         <StackPanel Orientation="Horizontal">
