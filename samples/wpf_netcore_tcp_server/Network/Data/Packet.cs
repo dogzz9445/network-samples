@@ -53,6 +53,8 @@ namespace SettingNetwork
                     return typeof(Hardware_Status);
                 case E_ICD_PACKET_TYPE.PacketType_INSTRUCTOR_MESSAGE:
                     return typeof(Instructor_Message);
+                case E_ICD_PACKET_TYPE.PacketType_EVALUATION_ACTION:
+                    return typeof(Evaluation_Action);
             }
         }
 
@@ -77,6 +79,10 @@ namespace SettingNetwork
             else if (classType == typeof(Instructor_Message))
             {
                 return E_ICD_PACKET_TYPE.PacketType_INSTRUCTOR_MESSAGE;
+            }
+            else if (classType == typeof(Evaluation_Action))
+            {
+                return E_ICD_PACKET_TYPE.PacketType_EVALUATION_ACTION;
             }
 
 
