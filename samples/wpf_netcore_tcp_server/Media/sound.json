@@ -1,0 +1,23 @@
+[
+	{
+		"ID": 1,
+		"Type": 1,
+		"FileName": "voice/test_voice_0001.wav",
+		"LoopingUse": -1,
+		"Desc": "UI 사운드: 방재실에서 한시가 급한 서류작업 중 지상 4층의 헬스장 재실자로부터 다급하게 복도 천장에서 평소보다 유독 매캐한 냄새가 난다는 전화가 왔다. 하지만 화재수신기를 확인해보니 어떠한 화재신호도 받지 않은 상태이다."
+	},
+	{
+		"ID": 2,
+		"Type": 1,
+		"FileName": "voice/test_voice_0002.wav",
+		"LoopingUse": -1,
+		"Desc": "UI 사운드: 지상 4층 헬스장 복도 천장에서 평소보다 유독 매캐한 냄새가 납니다."
+	},
+	{
+		"ID": 3,
+		"Type": 1,
+		"FileName": "voice/test_voice_0003.wav",
+		"LoopingUse": -1,
+		"Desc": "UI 사운드: 시나리오가 종료되었습니다."
+	}
+]

@@ -18,7 +18,7 @@ namespace SettingNetwork
         private byte[] _length = new byte[4];
         private byte[] _buffer = new byte[65536];
 
-        private bool _stop;
+        private bool _stop = false;
 
         public BaseTcpClient(string address, int port) : base(address, port) 
         {
@@ -43,12 +43,12 @@ namespace SettingNetwork
         {
             Console.WriteLine($"Chat TCP client disconnected a session with Id {Id}");
 
-            //// Wait for a while...
-            //Thread.Sleep(1000);
+            // Wait for a while...
+            Thread.Sleep(1000);
 
-            //// Try to connect again
-            //if (!_stop)
-            //    ConnectAsync();
+            // Try to connect again
+            if (!_stop)
+                ConnectAsync();
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)

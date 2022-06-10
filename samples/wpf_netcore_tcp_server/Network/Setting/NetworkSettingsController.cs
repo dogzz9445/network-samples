@@ -42,7 +42,7 @@ namespace SettingNetwork
         {
             if (IsSaveContext)
             {
-                await WriteFileAsync(ContextFullFileName, Context);
+                //await WriteFileAsync(ContextFullFileName, Context);
             }
         }
 

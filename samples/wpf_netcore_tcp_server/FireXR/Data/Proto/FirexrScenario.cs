@@ -57,28 +57,27 @@ namespace FireXR.Protobuf {
             "AklEGAEgASgNEhAKCENhdGVnb3J5GAIgASgJEg4KBkFjdGlvbhgDIAEoCRIO",
             "CgZXZWlnaHQYBCABKAISDQoFU2NvcmUYBSABKAISDAoEVHlwZRgGIAEoCRIQ",
             "CghDb250ZW50cxgHIAEoCRIZChFFdmFsdWF0aW9uQWN0aW9ucxgIIAMoDRIM",
-            "CgREZXNjGAkgASgJIsMCChFTZXBhcmF0ZWRTY2VuYXJpbxIKCgJJRBgBIAEo",
+            "CgREZXNjGAkgASgJIrYCChFTZXBhcmF0ZWRTY2VuYXJpbxIKCgJJRBgBIAEo",
             "DRIPCgdWZXJzaW9uGAIgASgFEhAKCENhdGVnb3J5GAMgAygJEg0KBVRpdGxl",
             "GAQgASgJEhMKC0Rlc2NyaXB0aW9uGAUgASgJEiYKCEZhY2lsaXR5GAYgASgO",
             "MhQuRmlyZVhSLkZhY2lsaXR5VHlwZRIUCgxVc2VQYXJlbnRGRFMYByABKAUS",
-            "HQoITG9jYWxGRFMYCCABKAsyCy5GaXJlWFIuRkRTEhUKDUZEU1N0YXJ0RGVs",
-            "YXkYCSABKAISGQoRVXNlUGFyZW50RGF5bGlnaHQYCiABKAUSFAoMRGF5bGln",
-            "aHRUaW1lGAsgASgCEg8KB1RpbWVvdXQYDCABKAISEwoLRXZhbHVhdGlvbnMY",
-            "DSADKA0SEAoIWFJFdmVudHMYDiADKA0i1QEKEENvbWJpbmVkU2NlbmFyaW8S",
-            "CgoCSUQYASABKA0SDwoHVmVyc2lvbhgCIAEoBRINCgVUaXRsZRgDIAEoCRIT",
-            "CgtEZXNjcmlwdGlvbhgEIAEoCRImCghGYWNpbGl0eRgFIAEoDjIULkZpcmVY",
-            "Ui5GYWNpbGl0eVR5cGUSGAoDRkRTGAYgASgLMgsuRmlyZVhSLkZEUxIVCg1G",
-            "RFNTdGFydERlbGF5GAcgASgCEhQKDERheWxpZ2h0VGltZRgIIAEoAhIRCglT",
-            "Y2VuYXJpb3MYCSADKA0qcwoMRmFjaWxpdHlUeXBlEgoKBkdsb2JhbBAAEhQK",
-            "EE11bHRpVXNlRmFjaWxpdHkQARITCg9Db21wbGV4RmFjaWxpdHkQAhITCg9F",
-            "bGRlcmx5RmFjaWxpdHkQAxIXChNVbmRlcmdyb3VuZEZhY2lsaXR5EAQqKAoN",
-            "VHJhbnNmb3JtVHlwZRIMCghQT1NJVElPThAAEgkKBVNDQUxBEAEqJgoLWFJF",
-            "dmVudFR5cGUSCQoFRXZlbnQQABIMCghMaXN0ZW5lchABKrcBCgxDYXRlZ29y",
-            "eVR5cGUSCAoETm9uZRAAEhMKD0Vhcmx5RXh0aW5jdGlvbhABEhMKD0ZpcmVS",
-            "ZWNvZ25pdGlvbhACEhQKEEZpcmVOb3RpZmljYXRpb24QAxIWChJFdmFjdWF0",
-            "aW9uR3VpZGFuY2UQBBIQCgxGaXJlRmFjaWxpdHkQBRIRCg1GaXJlQ293b3Jr",
-            "aW5nEAYSDwoLRmlyZUNhbGxpbmcQBxIPCgtTdWRkZW5FdmVudBAIQhKqAg9G",
-            "aXJlWFIuUHJvdG9idWZiBnByb3RvMw=="));
+            "EAoITG9jYWxGRFMYCCABKA0SFQoNRkRTU3RhcnREZWxheRgJIAEoAhIZChFV",
+            "c2VQYXJlbnREYXlsaWdodBgKIAEoBRIUCgxEYXlsaWdodFRpbWUYCyABKAIS",
+            "DwoHVGltZW91dBgMIAEoAhITCgtFdmFsdWF0aW9ucxgNIAMoDRIQCghYUkV2",
+            "ZW50cxgOIAMoDSLIAQoQQ29tYmluZWRTY2VuYXJpbxIKCgJJRBgBIAEoDRIP",
+            "CgdWZXJzaW9uGAIgASgFEg0KBVRpdGxlGAMgASgJEhMKC0Rlc2NyaXB0aW9u",
+            "GAQgASgJEiYKCEZhY2lsaXR5GAUgASgOMhQuRmlyZVhSLkZhY2lsaXR5VHlw",
+            "ZRILCgNGRFMYBiABKA0SFQoNRkRTU3RhcnREZWxheRgHIAEoAhIUCgxEYXls",
+            "aWdodFRpbWUYCCABKAISEQoJU2NlbmFyaW9zGAkgAygNKnMKDEZhY2lsaXR5",
+            "VHlwZRIKCgZHbG9iYWwQABIUChBNdWx0aVVzZUZhY2lsaXR5EAESEwoPQ29t",
+            "cGxleEZhY2lsaXR5EAISEwoPRWxkZXJseUZhY2lsaXR5EAMSFwoTVW5kZXJn",
+            "cm91bmRGYWNpbGl0eRAEKigKDVRyYW5zZm9ybVR5cGUSDAoIUE9TSVRJT04Q",
+            "ABIJCgVTQ0FMQRABKiYKC1hSRXZlbnRUeXBlEgkKBUV2ZW50EAASDAoITGlz",
+            "dGVuZXIQASq3AQoMQ2F0ZWdvcnlUeXBlEggKBE5vbmUQABITCg9FYXJseUV4",
+            "dGluY3Rpb24QARITCg9GaXJlUmVjb2duaXRpb24QAhIUChBGaXJlTm90aWZp",
+            "Y2F0aW9uEAMSFgoSRXZhY3VhdGlvbkd1aWRhbmNlEAQSEAoMRmlyZUZhY2ls",
+            "aXR5EAUSEQoNRmlyZUNvd29ya2luZxAGEg8KC0ZpcmVDYWxsaW5nEAcSDwoL",
+            "U3VkZGVuRXZlbnQQCEISqgIPRmlyZVhSLlByb3RvYnVmYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::FireXR.Protobuf.FacilityType), typeof(global::FireXR.Protobuf.TransformType), typeof(global::FireXR.Protobuf.XREventType), typeof(global::FireXR.Protobuf.CategoryType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -4037,7 +4036,7 @@ namespace FireXR.Protobuf {
       description_ = other.description_;
       facility_ = other.facility_;
       useParentFDS_ = other.useParentFDS_;
-      localFDS_ = other.localFDS_ != null ? other.localFDS_.Clone() : null;
+      localFDS_ = other.localFDS_;
       fDSStartDelay_ = other.fDSStartDelay_;
       useParentDaylight_ = other.useParentDaylight_;
       daylightTime_ = other.daylightTime_;
@@ -4130,9 +4129,9 @@ namespace FireXR.Protobuf {
 
     /// <summary>Field number for the "LocalFDS" field.</summary>
     public const int LocalFDSFieldNumber = 8;
-    private global::FireXR.Protobuf.FDS localFDS_;
+    private uint localFDS_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::FireXR.Protobuf.FDS LocalFDS {
+    public uint LocalFDS {
       get { return localFDS_; }
       set {
         localFDS_ = value;
@@ -4223,7 +4222,7 @@ namespace FireXR.Protobuf {
       if (Description != other.Description) return false;
       if (Facility != other.Facility) return false;
       if (UseParentFDS != other.UseParentFDS) return false;
-      if (!object.Equals(LocalFDS, other.LocalFDS)) return false;
+      if (LocalFDS != other.LocalFDS) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(FDSStartDelay, other.FDSStartDelay)) return false;
       if (UseParentDaylight != other.UseParentDaylight) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(DaylightTime, other.DaylightTime)) return false;
@@ -4243,7 +4242,7 @@ namespace FireXR.Protobuf {
       if (Description.Length != 0) hash ^= Description.GetHashCode();
       if (Facility != global::FireXR.Protobuf.FacilityType.Global) hash ^= Facility.GetHashCode();
       if (UseParentFDS != 0) hash ^= UseParentFDS.GetHashCode();
-      if (localFDS_ != null) hash ^= LocalFDS.GetHashCode();
+      if (LocalFDS != 0) hash ^= LocalFDS.GetHashCode();
       if (FDSStartDelay != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(FDSStartDelay);
       if (UseParentDaylight != 0) hash ^= UseParentDaylight.GetHashCode();
       if (DaylightTime != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(DaylightTime);
@@ -4291,9 +4290,9 @@ namespace FireXR.Protobuf {
         output.WriteRawTag(56);
         output.WriteInt32(UseParentFDS);
       }
-      if (localFDS_ != null) {
-        output.WriteRawTag(66);
-        output.WriteMessage(LocalFDS);
+      if (LocalFDS != 0) {
+        output.WriteRawTag(64);
+        output.WriteUInt32(LocalFDS);
       }
       if (FDSStartDelay != 0F) {
         output.WriteRawTag(77);
@@ -4347,9 +4346,9 @@ namespace FireXR.Protobuf {
         output.WriteRawTag(56);
         output.WriteInt32(UseParentFDS);
       }
-      if (localFDS_ != null) {
-        output.WriteRawTag(66);
-        output.WriteMessage(LocalFDS);
+      if (LocalFDS != 0) {
+        output.WriteRawTag(64);
+        output.WriteUInt32(LocalFDS);
       }
       if (FDSStartDelay != 0F) {
         output.WriteRawTag(77);
@@ -4397,8 +4396,8 @@ namespace FireXR.Protobuf {
       if (UseParentFDS != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(UseParentFDS);
       }
-      if (localFDS_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(LocalFDS);
+      if (LocalFDS != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(LocalFDS);
       }
       if (FDSStartDelay != 0F) {
         size += 1 + 4;
@@ -4444,11 +4443,8 @@ namespace FireXR.Protobuf {
       if (other.UseParentFDS != 0) {
         UseParentFDS = other.UseParentFDS;
       }
-      if (other.localFDS_ != null) {
-        if (localFDS_ == null) {
-          LocalFDS = new global::FireXR.Protobuf.FDS();
-        }
-        LocalFDS.MergeFrom(other.LocalFDS);
+      if (other.LocalFDS != 0) {
+        LocalFDS = other.LocalFDS;
       }
       if (other.FDSStartDelay != 0F) {
         FDSStartDelay = other.FDSStartDelay;
@@ -4506,11 +4502,8 @@ namespace FireXR.Protobuf {
             UseParentFDS = input.ReadInt32();
             break;
           }
-          case 66: {
-            if (localFDS_ == null) {
-              LocalFDS = new global::FireXR.Protobuf.FDS();
-            }
-            input.ReadMessage(LocalFDS);
+          case 64: {
+            LocalFDS = input.ReadUInt32();
             break;
           }
           case 77: {
@@ -4581,11 +4574,8 @@ namespace FireXR.Protobuf {
             UseParentFDS = input.ReadInt32();
             break;
           }
-          case 66: {
-            if (localFDS_ == null) {
-              LocalFDS = new global::FireXR.Protobuf.FDS();
-            }
-            input.ReadMessage(LocalFDS);
+          case 64: {
+            LocalFDS = input.ReadUInt32();
             break;
           }
           case 77: {
@@ -4655,7 +4645,7 @@ namespace FireXR.Protobuf {
       title_ = other.title_;
       description_ = other.description_;
       facility_ = other.facility_;
-      fDS_ = other.fDS_ != null ? other.fDS_.Clone() : null;
+      fDS_ = other.fDS_;
       fDSStartDelay_ = other.fDSStartDelay_;
       daylightTime_ = other.daylightTime_;
       scenarios_ = other.scenarios_.Clone();
@@ -4724,9 +4714,9 @@ namespace FireXR.Protobuf {
 
     /// <summary>Field number for the "FDS" field.</summary>
     public const int FDSFieldNumber = 6;
-    private global::FireXR.Protobuf.FDS fDS_;
+    private uint fDS_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::FireXR.Protobuf.FDS FDS {
+    public uint FDS {
       get { return fDS_; }
       set {
         fDS_ = value;
@@ -4783,7 +4773,7 @@ namespace FireXR.Protobuf {
       if (Title != other.Title) return false;
       if (Description != other.Description) return false;
       if (Facility != other.Facility) return false;
-      if (!object.Equals(FDS, other.FDS)) return false;
+      if (FDS != other.FDS) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(FDSStartDelay, other.FDSStartDelay)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(DaylightTime, other.DaylightTime)) return false;
       if(!scenarios_.Equals(other.scenarios_)) return false;
@@ -4798,7 +4788,7 @@ namespace FireXR.Protobuf {
       if (Title.Length != 0) hash ^= Title.GetHashCode();
       if (Description.Length != 0) hash ^= Description.GetHashCode();
       if (Facility != global::FireXR.Protobuf.FacilityType.Global) hash ^= Facility.GetHashCode();
-      if (fDS_ != null) hash ^= FDS.GetHashCode();
+      if (FDS != 0) hash ^= FDS.GetHashCode();
       if (FDSStartDelay != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(FDSStartDelay);
       if (DaylightTime != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(DaylightTime);
       hash ^= scenarios_.GetHashCode();
@@ -4838,9 +4828,9 @@ namespace FireXR.Protobuf {
         output.WriteRawTag(40);
         output.WriteEnum((int) Facility);
       }
-      if (fDS_ != null) {
-        output.WriteRawTag(50);
-        output.WriteMessage(FDS);
+      if (FDS != 0) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(FDS);
       }
       if (FDSStartDelay != 0F) {
         output.WriteRawTag(61);
@@ -4880,9 +4870,9 @@ namespace FireXR.Protobuf {
         output.WriteRawTag(40);
         output.WriteEnum((int) Facility);
       }
-      if (fDS_ != null) {
-        output.WriteRawTag(50);
-        output.WriteMessage(FDS);
+      if (FDS != 0) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(FDS);
       }
       if (FDSStartDelay != 0F) {
         output.WriteRawTag(61);
@@ -4917,8 +4907,8 @@ namespace FireXR.Protobuf {
       if (Facility != global::FireXR.Protobuf.FacilityType.Global) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Facility);
       }
-      if (fDS_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(FDS);
+      if (FDS != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FDS);
       }
       if (FDSStartDelay != 0F) {
         size += 1 + 4;
@@ -4953,11 +4943,8 @@ namespace FireXR.Protobuf {
       if (other.Facility != global::FireXR.Protobuf.FacilityType.Global) {
         Facility = other.Facility;
       }
-      if (other.fDS_ != null) {
-        if (fDS_ == null) {
-          FDS = new global::FireXR.Protobuf.FDS();
-        }
-        FDS.MergeFrom(other.FDS);
+      if (other.FDS != 0) {
+        FDS = other.FDS;
       }
       if (other.FDSStartDelay != 0F) {
         FDSStartDelay = other.FDSStartDelay;
@@ -5000,11 +4987,8 @@ namespace FireXR.Protobuf {
             Facility = (global::FireXR.Protobuf.FacilityType) input.ReadEnum();
             break;
           }
-          case 50: {
-            if (fDS_ == null) {
-              FDS = new global::FireXR.Protobuf.FDS();
-            }
-            input.ReadMessage(FDS);
+          case 48: {
+            FDS = input.ReadUInt32();
             break;
           }
           case 61: {
@@ -5054,11 +5038,8 @@ namespace FireXR.Protobuf {
             Facility = (global::FireXR.Protobuf.FacilityType) input.ReadEnum();
             break;
           }
-          case 50: {
-            if (fDS_ == null) {
-              FDS = new global::FireXR.Protobuf.FDS();
-            }
-            input.ReadMessage(FDS);
+          case 48: {
+            FDS = input.ReadUInt32();
             break;
           }
           case 61: {

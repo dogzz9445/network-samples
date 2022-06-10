@@ -1,0 +1,162 @@
+[
+	{
+		"ID": 1,
+		"Version": 1,
+		"DataType": 0,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 600,
+		"FileName": "MultiUseFacility_DevicePosition_B1.json",
+		"Desc": "초기 테스트 디바이스 포지션 지하 1층"
+	},
+	{
+		"ID": 2,
+		"Version": 1,
+		"DataType": 1,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 600,
+		"FileName": "MultiUseFacility_TimeCalories_B1.json",
+		"Desc": "초기 테스트 타임 칼로리 지하 1층"
+	},
+	{
+		"ID": 3,
+		"Version": 1,
+		"DataType": 0,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 600,
+		"FileName": "DevicePosition_220502_01.json",
+		"Desc": "다중이용시설 0.6미터 초기 테스트 디바이스 포지션 지하 1층"
+	},
+	{
+		"ID": 4,
+		"Version": 1,
+		"DataType": 1,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 600,
+		"FileName": "TimeCalories_220502_01.json",
+		"Desc": "다중이용시설 0.6미터 초기 테스트 타임 칼로리 지하 1층"
+	},
+	{
+		"ID": 5,
+		"Version": 1,
+		"DataType": 2,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 10,
+		"FileName": "TimeCalories_220502_01_10까지.json",
+		"Desc": "다중이용시설 0.6미터 초기 테스트 타임 칼로리 지하 1층 10초까지"
+	},
+	{
+		"ID": 6,
+		"Version": 0,
+		"DataType": 0,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 0,
+		"FileName": 0,
+		"Desc": 0
+	},
+	{
+		"ID": 7,
+		"Version": 0,
+		"DataType": 0,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 0,
+		"FileName": 0,
+		"Desc": 0
+	},
+	{
+		"ID": 8,
+		"Version": 0,
+		"DataType": 0,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 0,
+		"FileName": 0,
+		"Desc": 0
+	},
+	{
+		"ID": 9,
+		"Version": 0,
+		"DataType": 0,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 0,
+		"FileName": 0,
+		"Desc": 0
+	},
+	{
+		"ID": 10,
+		"Version": 0,
+		"DataType": 0,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 0,
+		"FileName": 0,
+		"Desc": 0
+	},
+	{
+		"ID": 11,
+		"Version": 0,
+		"DataType": 0,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 0,
+		"FileName": 0,
+		"Desc": 0
+	},
+	{
+		"ID": 12,
+		"Version": 0,
+		"DataType": 0,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 0,
+		"FileName": 0,
+		"Desc": 0
+	},
+	{
+		"ID": 13,
+		"Version": 0,
+		"DataType": 0,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 0,
+		"FileName": 0,
+		"Desc": 0
+	},
+	{
+		"ID": 14,
+		"Version": 0,
+		"DataType": 0,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 0,
+		"FileName": 0,
+		"Desc": 0
+	},
+	{
+		"ID": 15,
+		"Version": 0,
+		"DataType": 0,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 0,
+		"FileName": 0,
+		"Desc": 0
+	},
+	{
+		"ID": 16,
+		"Version": 0,
+		"DataType": 0,
+		"DeviceType": 0,
+		"StartTime": 0,
+		"EndTime": 0,
+		"FileName": 0,
+		"Desc": 0
+	}
+]

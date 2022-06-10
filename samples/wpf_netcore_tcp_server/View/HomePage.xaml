@@ -70,7 +70,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="240" />
+            <RowDefinition Height="400" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="96" />
         </Grid.RowDefinitions>
@@ -163,6 +163,51 @@
                         Command="{Binding SendPacket4Command}"
                         HorizontalAlignment="Center"
                         Content="패킷4"
+                        Margin="8" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="8">
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendPacketInitCommand}"
+                        HorizontalAlignment="Center"
+                        Content="준비"
+                        Margin="8" />
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendPacketStartCommand}"
+                        HorizontalAlignment="Center"
+                        Content="시작"
+                        Margin="8" />
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendPacketStopCommand}"
+                        HorizontalAlignment="Center"
+                        Content="정지"
+                        Margin="8" />
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendPacketShutdownCommand}"
+                        HorizontalAlignment="Center"
+                        Content="종료"
+                        Margin="8" />
+                
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendPacket1Command}"
+                        HorizontalAlignment="Center"
+                        Content="준비"
+                        Margin="8" />
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendPacket2Command}"
+                        HorizontalAlignment="Center"
+                        Content="시작"
+                        Margin="8" />
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendPacket3Command}"
+                        HorizontalAlignment="Center"
+                        Content="정지"
+                        Margin="8" />
+                <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                        Command="{Binding SendPacket4Command}"
+                        HorizontalAlignment="Center"
+                        Content="종료"
                         Margin="8" />
             </StackPanel>
         </StackPanel>

@@ -8,20 +8,28 @@ namespace FireXR.Util
     {
         public static T ReadFileOrDefault<T>(string filename) where T : new()
         {
-            if (File.Exists(filename))
+            if (!File.Exists(filename))
             {
-                var json = File.ReadAllText(filename);
-                if (!string.IsNullOrEmpty(json))
-                {
-                    return JsonConvert.DeserializeObject<T>(json,
-                        new JsonSerializerSettings()
-                        {
-                            DefaultValueHandling = DefaultValueHandling.Populate,
-                            NullValueHandling = NullValueHandling.Ignore
-                        });
-                }
+                return new T();
             }
-            return new T();
+            bool valid = true;
+            var json = File.ReadAllText(filename);
+            if (string.IsNullOrEmpty(json))
+            {
+                return new T();
+            }
+            T item = JsonConvert.DeserializeObject<T>(json,
+                new JsonSerializerSettings()
+                {
+                    DefaultValueHandling = DefaultValueHandling.Populate,
+                    NullValueHandling = NullValueHandling.Ignore,
+                    Error = (s, e) =>
+                    {
+                        e.ErrorContext.Handled = true;
+                        valid = false;
+                    }
+                });
+            return valid ? item : new T();
         }
 
         public static async Task WriteFileAsync<T>(string fullFileName, T jsonObject)

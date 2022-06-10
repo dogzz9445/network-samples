@@ -1,0 +1,167 @@
+[
+	{
+		"ID": 500101,
+		"Type": 0,
+		"Action": "Move",
+		"Target": 1,
+		"Contents": "{\"id\": 1}",
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 500102,
+		"Desc": "플레이어 초기 위치로 이동"
+	},
+	{
+		"ID": 500102,
+		"Type": 0,
+		"Action": "ShowCutscene",
+		"Target": 1,
+		"Contents": 0,
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 500103,
+		"Desc": "컷신 - 시나리오 001 "
+	},
+	{
+		"ID": 500103,
+		"Type": 0,
+		"Action": "Activate",
+		"Target": 2,
+		"Contents": 0,
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 500104,
+		"Desc": "전화기 오브젝트를 활성화함(전화기 활성화시 전화벨 울림)"
+	},
+	{
+		"ID": 500104,
+		"Type": 0,
+		"Action": "Tooltip",
+		"Target": 2,
+		"Contents": "{\"text\": \"전화기 울림\"}",
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 500105,
+		"Desc": "전화기 오브젝트에 전화기 울림이라는 툴팁을 담"
+	},
+	{
+		"ID": 500105,
+		"Type": 0,
+		"Action": "Outline",
+		"Target": 2,
+		"Contents": 0,
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 500106,
+		"Desc": "전화기 오브젝트에 아웃라인을 그려줌"
+	},
+	{
+		"ID": 500106,
+		"Type": 0,
+		"Action": "ShowPopup",
+		"Target": 0,
+		"Contents": "{\"voice\": 1, \"title\": \"화재인지\", \"text\":\"방재실에서 한시가 급한 서류작업 중 지상 4층의 헬스장 재실자로부터 다급하게 복도 천장에서 평소보다 유독 매캐한 냄새가 난다는 전화가 왔다. 하지만 화재수신기를 확인해보니 어떠한 화재신호도 받지 않은 상태이다.\"}",
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 0,
+		"Desc": "UI 시나리오 시작 - 다이얼로그 확인"
+	},
+	{
+		"ID": 500201,
+		"Type": 1,
+		"Action": "Interacted",
+		"Target": 2,
+		"Contents": 0,
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 500202,
+		"Desc": "방재실 전화기가 상호작용되었을 때 시작"
+	},
+	{
+		"ID": 500202,
+		"Type": 0,
+		"Action": "ShowPopup",
+		"Target": 0,
+		"Contents": "{\"voice\": 2, \"title\": \"전화 보고\", \"text\":\"지상 4층 헬스장 복도 천장에서 평소보다 유독 매캐한 냄새가 납니다.\"}",
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 500203,
+		"Desc": "UI 전화 보고 - 다이얼로그 확인"
+	},
+	{
+		"ID": 500203,
+		"Type": 0,
+		"Action": "Tooltip",
+		"Target": 3,
+		"Contents": "{\"text\": \"정상\"}",
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 500204,
+		"Desc": "수신기 오브젝트에 정상이라는 툴팁을 담"
+	},
+	{
+		"ID": 500204,
+		"Type": 0,
+		"Action": "Outline",
+		"Target": 3,
+		"Contents": 0,
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 500205,
+		"Desc": "수신기 오브젝트에 아웃라인을 그려줌"
+	},
+	{
+		"ID": 500205,
+		"Type": 1,
+		"Action": "EyeRaycasted",
+		"Target": 3,
+		"Contents": 0,
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 500206,
+		"Desc": "수신기 오브젝트를 바라보았을 때 시작"
+	},
+	{
+		"ID": 500206,
+		"Type": 0,
+		"Action": "SendEvaluation",
+		"Target": 15,
+		"Contents": 0,
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 0,
+		"Desc": "수신기를 확인하였다는 평가 내용 전송"
+	},
+	{
+		"ID": 500301,
+		"Type": 1,
+		"Action": "PlayerEntered",
+		"Target": 19,
+		"Contents": 0,
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 500302,
+		"Desc": "4층에 플레이어가 진입하였을 때 시작"
+	},
+	{
+		"ID": 500302,
+		"Type": 0,
+		"Action": "ShowPopup",
+		"Target": 0,
+		"Contents": "{\"voice\": 3, \"title\": \"시나리오 종료\", \"text\":\"시나리오가 종료되었습니다.\"}",
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 500303,
+		"Desc": "UI 시나리오 종료 - 다이얼로그 확인"
+	},
+	{
+		"ID": 500303,
+		"Type": 0,
+		"Action": "EndScenario",
+		"Target": -1,
+		"Contents": 0,
+		"StartDelay": 0,
+		"NextDelay": 0,
+		"NextID": 0,
+		"Desc": "시나리오를 종료함"
+	}
+]

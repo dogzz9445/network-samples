@@ -1,0 +1,274 @@
+[
+	{
+		"ID": 1,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 2,
+		"Contents": "{\"left\": 4, \"right\": 0}",
+		"Desc": "지하1층 오른쪽 계단"
+	},
+	{
+		"ID": 2,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 3,
+		"Contents": "{\"left\": 5, \"right\": 0}",
+		"Desc": "지하1층 왼쪽 계단"
+	},
+	{
+		"ID": 3,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 4,
+		"Contents": "{\"left\": 6, \"right\": 2}",
+		"Desc": "1층 오른쪽 계단"
+	},
+	{
+		"ID": 4,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 5,
+		"Contents": "{\"left\": 7, \"right\": 3}",
+		"Desc": "1층 왼쪽 계단"
+	},
+	{
+		"ID": 5,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 6,
+		"Contents": "{\"left\": 8, \"right\": 4}",
+		"Desc": "2층 오른쪽 계단"
+	},
+	{
+		"ID": 6,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 7,
+		"Contents": "{\"left\": 9, \"right\": 5}",
+		"Desc": "2층 왼쪽 계단"
+	},
+	{
+		"ID": 7,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 8,
+		"Contents": "{\"left\": 10, \"right\": 6}",
+		"Desc": "3층 오른쪽 계단"
+	},
+	{
+		"ID": 8,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 9,
+		"Contents": "{\"left\": 11, \"right\": 7}",
+		"Desc": "3층 왼쪽 계단"
+	},
+	{
+		"ID": 9,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 10,
+		"Contents": "{\"left\": 12, \"right\": 8}",
+		"Desc": "4층 오른쪽 계단"
+	},
+	{
+		"ID": 10,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 11,
+		"Contents": "{\"left\": 13, \"right\": 9}",
+		"Desc": "4층 왼쪽 계단"
+	},
+	{
+		"ID": 11,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 12,
+		"Contents": "{\"left\": 14, \"right\": 10}",
+		"Desc": "5층 오른쪽 계단"
+	},
+	{
+		"ID": 12,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 13,
+		"Contents": "{\"left\": 15, \"right\": 11}",
+		"Desc": "5층 왼쪽 계단"
+	},
+	{
+		"ID": 13,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 14,
+		"Contents": "{\"left\": 0, \"right\": 12}",
+		"Desc": "옥상 오른쪽 계단"
+	},
+	{
+		"ID": 14,
+		"Facility": 1,
+		"Type": "teleport_floor",
+		"LocalTransform": 15,
+		"Contents": "{\"left\": 0, \"right\": 13}",
+		"Desc": "옥상 왼쪽 계단"
+	},
+	{
+		"ID": 15,
+		"Facility": 1,
+		"Type": "floor",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "충돌체_지하1층"
+	},
+	{
+		"ID": 16,
+		"Facility": 1,
+		"Type": "floor",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "충돌체_1층"
+	},
+	{
+		"ID": 17,
+		"Facility": 1,
+		"Type": "floor",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "충돌체_2층"
+	},
+	{
+		"ID": 18,
+		"Facility": 1,
+		"Type": "floor",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "충돌체_3층"
+	},
+	{
+		"ID": 19,
+		"Facility": 1,
+		"Type": "floor",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "충돌체_4층"
+	},
+	{
+		"ID": 20,
+		"Facility": 1,
+		"Type": "floor",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "충돌체_5층"
+	},
+	{
+		"ID": 21,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "방재실"
+	},
+	{
+		"ID": 22,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "노래방"
+	},
+	{
+		"ID": 23,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "주차장"
+	},
+	{
+		"ID": 24,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "중식당"
+	},
+	{
+		"ID": 25,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "카페"
+	},
+	{
+		"ID": 26,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "편의점"
+	},
+	{
+		"ID": 27,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "은행"
+	},
+	{
+		"ID": 28,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "애견샵"
+	},
+	{
+		"ID": 29,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "키즈카페"
+	},
+	{
+		"ID": 30,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "학원"
+	},
+	{
+		"ID": 31,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "치과"
+	},
+	{
+		"ID": 32,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "정형외과"
+	},
+	{
+		"ID": 33,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "헬스장"
+	},
+	{
+		"ID": 34,
+		"Facility": 1,
+		"Type": "area",
+		"LocalTransform": 0,
+		"Contents": 0,
+		"Desc": "고시원"
+	}
+]

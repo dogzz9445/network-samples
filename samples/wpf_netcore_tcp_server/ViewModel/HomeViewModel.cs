@@ -129,6 +129,44 @@ namespace wpf_netcore_tcp_server.ViewModel
             });
         }
 
+
+        private DelegateCommand _sendPacketInitCommand;
+        public DelegateCommand SendPacketInitCommand
+        {
+            get => _sendPacketInitCommand ??= new DelegateCommand(() =>
+            {
+                NetworkManager.Module.Send(TargetId, new Command_Control() { TrnControlCommand = E_COMMAND_CONTROL_TYPE.ControlType_Init });
+            });
+        }
+
+        private DelegateCommand _sendPacketStartCommand;
+        public DelegateCommand SendPacketStartCommand
+        {
+            get => _sendPacketStartCommand ??= new DelegateCommand(() =>
+            {
+                NetworkManager.Module.Send(TargetId, new Command_Control() { TrnControlCommand = E_COMMAND_CONTROL_TYPE.ControlType_Start });
+            });
+        }
+
+        private DelegateCommand _sendPacketStopCommand;
+        public DelegateCommand SendPacketStopCommand
+        {
+            get => _sendPacketStopCommand ??= new DelegateCommand(() =>
+            {
+                NetworkManager.Module.Send(TargetId, new Command_Control() { TrnControlCommand = E_COMMAND_CONTROL_TYPE.ControlType_Stop });
+            });
+        }
+
+        private DelegateCommand _sendPacketShutdownCommand;
+        public DelegateCommand SendPacketShutdownCommand
+        {
+            get => _sendPacketShutdownCommand ??= new DelegateCommand(() =>
+            {
+                NetworkManager.Module.Send(TargetId, new Command_Control() { TrnControlCommand = E_COMMAND_CONTROL_TYPE.ControlType_Shutdown });
+            });
+        }
+
+
         private DelegateCommand _selectFileCommand;
         public DelegateCommand SelectFileCommand
         {
