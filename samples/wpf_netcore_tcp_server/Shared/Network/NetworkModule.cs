@@ -189,8 +189,9 @@ namespace SettingNetwork
         }
 
         #region TCP UDP 통신
-        public void SendTCP(int destinationId, string message)
+        public async void SendTCP(int destinationId, string message)
         {
+            await Task.Yield();
             if (_settings == null)
             {
                 return;
@@ -241,7 +242,7 @@ namespace SettingNetwork
             byte[] bufLength = BitConverter.GetBytes(length);
             Array.Copy(bufLength, 0, buffer, 0, 4);
             Array.Copy(bufMessage, 0, buffer, 4, length);
-            _tcpClients[destinationId].Send(buffer);
+            _tcpClients[destinationId].SendAsync(buffer);
             Log($"Sended to [{destinationId}] message [{message}]");
         }
 
@@ -279,7 +280,7 @@ namespace SettingNetwork
             }
         }
 
-        public void Send(int destinationId, Packet packet, ProtocolType protocolType = ProtocolType.Tcp)
+        public void Send<T>(int destinationId, T packet, ProtocolType protocolType = ProtocolType.Tcp) where T : Packet
         {
             packet.From = _settings.HostId ?? 0;
             packet.To = destinationId;

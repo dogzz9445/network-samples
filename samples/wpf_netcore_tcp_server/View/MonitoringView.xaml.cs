@@ -12,30 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using wpf_netcore_tcp_server.ViewModel;
 
 namespace wpf_netcore_tcp_server.View
 {
     /// <summary>
-    /// HomePage.xaml에 대한 상호 작용 논리
+    /// MonitoringView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class HomePage : Page
+    public partial class MonitoringView : Page
     {
-        private HomeViewModel _viewModel;
-
-        MonitoringView monitoring = new MonitoringView();
-        CustomUserControl userControl = new CustomUserControl();
-
-        public HomePage()
+        public MonitoringView()
         {
             InitializeComponent();
-
-            _viewModel = new HomeViewModel();
-            DataContext = _viewModel;
-
-            HI = userControl;
-            
-
         }
     }
 }

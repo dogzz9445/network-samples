@@ -210,6 +210,7 @@
                         Content="종료"
                         Margin="8" />
             </StackPanel>
+            <UserControl x:Name="HI"/>
         </StackPanel>
         <Grid Grid.Row="1">
             <Border BorderBrush="#32FFFFFF"

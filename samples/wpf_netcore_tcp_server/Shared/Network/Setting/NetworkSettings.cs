@@ -162,45 +162,6 @@ namespace SettingNetwork
 
         #endregion
 
-        #region 비교 구문
-        public override bool Equals(object obj)
-        {
-            return obj is ComputerInfo info &&
-                   _id == info._id &&
-                   _ipAddress == info._ipAddress &&
-                   _name == info._name &&
-                   _description == info._description &&
-                   _type == info._type &&
-                   _useTcpServer == info._useTcpServer &&
-                   _tcpPort == info._tcpPort &&
-                   _useFileTcpServer == info._useFileTcpServer &&
-                   _fileTcpPort == info._fileTcpPort &&
-                   _useUdpServer == info._useUdpServer &&
-                   _udpPort == info._udpPort &&
-                   _useHttpServer == info._useHttpServer &&
-                   _httpPort == info._httpPort;
-        }
-
-        public override int GetHashCode()
-        {
-            HashCode hash = new HashCode();
-            hash.Add(_id);
-            hash.Add(_ipAddress);
-            hash.Add(_name);
-            hash.Add(_description);
-            hash.Add(_type);
-            hash.Add(_useTcpServer);
-            hash.Add(_tcpPort);
-            hash.Add(_useFileTcpServer);
-            hash.Add(_fileTcpPort);
-            hash.Add(_useUdpServer);
-            hash.Add(_udpPort);
-            hash.Add(_useHttpServer);
-            hash.Add(_httpPort);
-            return hash.ToHashCode();
-        }
-
-        #endregion
     }
 
     public class NetworkSettings : BindableBase
@@ -246,30 +207,12 @@ namespace SettingNetwork
             ContentDelivery = contentDelivery ?? new ContentDeliveryServerInfo();
         }
 
-        public override bool Equals(object obj)
-        {
-            return obj is NetworkSettings settings &&
-                   _useDebug == settings._useDebug &&
-                   _hostId == settings._hostId &&
-                   _isSaveFileAbsolutePath == settings._isSaveFileAbsolutePath &&
-                   _fileSavedDirectory == settings._fileSavedDirectory &&
-                   EqualityComparer<ObservableCollection<ComputerInfo>>.Default.Equals(_computerInfos, settings._computerInfos);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(_useDebug, _hostId, _isSaveFileAbsolutePath, _fileSavedDirectory, _computerInfos);
-        }
-
         public void Add(ComputerInfo computerInfo)
         {
             computerInfo.PropertyChanged += RaisePropertyChangedEvent;
             ComputerInfos.Add(computerInfo);
             RaisePropertyChangedEvent();
         }
-        #endregion
-
-        #region 비교 구문
         #endregion
     }
 }
